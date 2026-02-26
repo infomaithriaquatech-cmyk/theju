@@ -1,0 +1,2372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TAPL – Theju Analytics | Powering Tomorrow</title>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800;900&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --white: #ffffff;
+  --off-white: #f7f8fa;
+  --light-gray: #e8eaed;
+  --mid-gray: #6b7280;
+  --dark-gray: #111827;
+  --black: #000000;
+  --teal: #00A878;
+  --teal-light: #00d4a0;
+  --teal-dark: #007a58;
+  --teal-bg: rgba(0,168,120,0.08);
+  --amber: #FF6A00;
+  --blue: #0066CC;
+  --radius: 20px;
+  --radius-lg: 32px;
+  --shadow: 0 4px 24px rgba(0,0,0,0.07);
+  --shadow-lg: 0 20px 60px rgba(0,0,0,0.12);
+}
+
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior:smooth; }
+
+body {
+  background: var(--white);
+  color: var(--dark-gray);
+  font-family: 'DM Sans', -apple-system, sans-serif;
+  overflow-x:hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+::-webkit-scrollbar { width:5px; }
+::-webkit-scrollbar-track { background:#f0f0f0; }
+::-webkit-scrollbar-thumb { background:#ccc; border-radius:3px; }
+
+/* ─── NAV ─── */
+nav {
+  position: fixed; top:0; left:0; right:0; z-index:1000;
+  padding: 0 48px;
+  height: 56px;
+  display:flex; align-items:center; justify-content:space-between;
+  background: rgba(255,255,255,0.92);
+  backdrop-filter: saturate(180%) blur(24px);
+  border-bottom: 1px solid rgba(0,0,0,0.06);
+  transition: box-shadow 0.3s;
+}
+.nav-logo { display:flex; align-items:center; gap:10px; text-decoration:none; }
+.nav-logo-mark {
+  width:30px; height:30px;
+  background: linear-gradient(135deg, var(--teal), var(--teal-light));
+  border-radius:8px;
+  display:flex; align-items:center; justify-content:center;
+  font-family:'Sora',sans-serif; font-weight:900; font-size:14px; color:#fff;
+}
+.nav-logo-text { font-family:'Sora',sans-serif; font-weight:700; font-size:16px; color:var(--dark-gray); letter-spacing:-0.4px; }
+.nav-links { display:flex; gap:32px; align-items:center; }
+.nav-links a { color:var(--mid-gray); font-size:13.5px; font-weight:500; text-decoration:none; transition:color 0.2s; }
+.nav-links a:hover { color:var(--teal); }
+.nav-cta { background:var(--teal); color:#fff; padding:9px 22px; border-radius:24px; font-size:13.5px; font-weight:600; text-decoration:none; transition:all 0.2s; }
+.nav-cta:hover { background:var(--teal-dark); transform:translateY(-1px); box-shadow:0 6px 20px rgba(0,168,120,0.3); }
+
+/* ─── HERO ─── */
+#hero {
+  min-height:100vh;
+  display:flex; flex-direction:column;
+  align-items:center; justify-content:center;
+  text-align:center;
+  padding:120px 24px 80px;
+  background: linear-gradient(160deg, #f0faf6 0%, #ffffff 40%, #f7f8fa 100%);
+  position:relative; overflow:hidden;
+}
+/* Decorative blobs */
+#hero::before {
+  content:'';
+  position:absolute; top:-200px; right:-200px;
+  width:600px; height:600px;
+  background: radial-gradient(ellipse, rgba(0,168,120,0.12), transparent 70%);
+  pointer-events:none;
+}
+#hero::after {
+  content:'';
+  position:absolute; bottom:-150px; left:-150px;
+  width:500px; height:500px;
+  background: radial-gradient(ellipse, rgba(0,102,204,0.08), transparent 70%);
+  pointer-events:none;
+}
+.hero-inner { position:relative; z-index:1; width:100%; max-width:1100px; display:grid; grid-template-columns:1fr 1fr; gap:60px; align-items:center; text-align:left; }
+.hero-left {}
+.hero-eyebrow {
+  display:inline-flex; align-items:center; gap:8px;
+  background:var(--teal-bg); border:1px solid rgba(0,168,120,0.25);
+  padding:6px 16px; border-radius:24px; margin-bottom:24px;
+  font-size:12.5px; font-weight:700; color:var(--teal); letter-spacing:0.5px;
+}
+.hero-eyebrow-dot { width:7px; height:7px; background:var(--teal); border-radius:50%; animation:blink 1.5s ease infinite; }
+@keyframes blink { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.3;transform:scale(0.7)} }
+
+.hero-title {
+  font-family:'Sora',sans-serif;
+  font-size:clamp(42px, 5.5vw, 78px);
+  font-weight:900;
+  line-height:1.0;
+  letter-spacing:-3px;
+  color:var(--dark-gray);
+  margin-bottom:20px;
+}
+.hero-title .grad {
+  background: linear-gradient(120deg, var(--teal) 0%, #00c896 60%, #0099ff 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.hero-sub { font-size:17px; color:var(--mid-gray); margin-bottom:36px; font-weight:400; line-height:1.7; max-width:520px; }
+.hero-sub strong { color:var(--dark-gray); font-weight:600; }
+.hero-actions { display:flex; gap:14px; flex-wrap:wrap; margin-bottom:40px; }
+.btn-fill { background:var(--dark-gray); color:#fff; padding:14px 28px; border-radius:28px; font-size:16px; font-weight:600; text-decoration:none; transition:all 0.2s; }
+.btn-fill:hover { background:#222; transform:translateY(-2px); box-shadow:0 10px 30px rgba(0,0,0,0.2); }
+.btn-outline { background:transparent; color:var(--teal); border:2px solid var(--teal); padding:13px 28px; border-radius:28px; font-size:16px; font-weight:600; text-decoration:none; transition:all 0.2s; }
+.btn-outline:hover { background:var(--teal); color:#fff; transform:translateY(-2px); }
+.hero-stats { display:flex; gap:28px; flex-wrap:wrap; }
+.h-stat { }
+.h-stat-num { font-family:'Sora',sans-serif; font-size:28px; font-weight:800; color:var(--dark-gray); letter-spacing:-1px; line-height:1; }
+.h-stat-unit { font-size:14px; font-weight:700; color:var(--teal); }
+.h-stat-label { font-size:12px; color:var(--mid-gray); font-weight:500; margin-top:3px; }
+.h-stat-div { width:1px; height:40px; background:var(--light-gray); align-self:center; }
+
+/* ─── HERO BATTERY SVG ─── */
+.hero-right { display:flex; align-items:center; justify-content:center; }
+.battery-viz { width:100%; max-width:480px; background:var(--white); border-radius:var(--radius-lg); padding:32px; box-shadow:var(--shadow-lg); border:1px solid var(--light-gray); position:relative; overflow:hidden; }
+.battery-viz::before {
+  content:'';
+  position:absolute; inset:0;
+  background: linear-gradient(135deg, rgba(0,168,120,0.04) 0%, transparent 60%);
+  pointer-events:none;
+}
+.bv-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:24px; }
+.bv-label { font-family:'Sora',sans-serif; font-size:13px; font-weight:700; color:var(--mid-gray); letter-spacing:1px; text-transform:uppercase; }
+.bv-live { display:flex; align-items:center; gap:6px; background:rgba(0,168,120,0.08); padding:5px 12px; border-radius:20px; font-size:12px; font-weight:700; color:var(--teal); }
+.bv-live-dot { width:6px; height:6px; background:var(--teal); border-radius:50%; animation:blink 1.2s ease infinite; }
+
+/* Main battery SVG area */
+.bv-battery-wrap { display:flex; justify-content:center; margin-bottom:24px; }
+.svg-battery { width:100%; max-width:320px; }
+
+/* Charge bars */
+.bv-bars { display:grid; grid-template-columns:repeat(10,1fr); gap:4px; margin-bottom:20px; }
+.bv-bar { height:40px; border-radius:6px; background:var(--light-gray); transition:all 0.5s; }
+.bv-bar.active { background:linear-gradient(to top, var(--teal-dark), var(--teal-light)); }
+.bv-bar.active.high { background:linear-gradient(to top, #059669, #34d399); }
+
+/* Metric chips */
+.bv-metrics { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; }
+.bv-metric { background:var(--off-white); border-radius:14px; padding:14px 12px; text-align:center; border:1px solid var(--light-gray); }
+.bv-metric-val { font-family:'Sora',sans-serif; font-size:18px; font-weight:800; color:var(--dark-gray); letter-spacing:-0.5px; }
+.bv-metric-key { font-size:10.5px; color:var(--mid-gray); font-weight:600; margin-top:3px; text-transform:uppercase; letter-spacing:0.5px; }
+.bv-metric.green .bv-metric-val { color:var(--teal); }
+.bv-metric.blue .bv-metric-val { color:#0066cc; }
+
+/* Waveform */
+.bv-wave { margin:16px 0 0; padding-top:16px; border-top:1px solid var(--light-gray); }
+.bv-wave-label { font-size:11px; font-weight:700; color:var(--mid-gray); letter-spacing:0.5px; text-transform:uppercase; margin-bottom:10px; }
+.wave-svg { width:100%; height:48px; }
+
+/* ─── TICKER ─── */
+.ticker-wrap { background:var(--dark-gray); overflow:hidden; padding:14px 0; }
+.ticker { display:inline-flex; animation:ticker-anim 35s linear infinite; white-space:nowrap; }
+.ticker span { color:rgba(255,255,255,0.55); font-size:13px; font-weight:500; padding:0 28px; letter-spacing:0.5px; }
+.ticker span.hi { color:var(--teal-light); }
+.ticker span::after { content:'·'; margin-left:28px; color:rgba(255,255,255,0.2); }
+@keyframes ticker-anim { 0%{transform:translateX(0)} 100%{transform:translateX(-50%)} }
+
+/* ─── SECTION COMMON ─── */
+section { padding:100px 24px; }
+.container { max-width:1100px; margin:0 auto; }
+.container-wide { max-width:1320px; margin:0 auto; }
+.section-eyebrow { font-size:12px; font-weight:800; color:var(--teal); letter-spacing:1.5px; text-transform:uppercase; margin-bottom:12px; text-align:center; }
+.section-title { font-family:'Sora',sans-serif; font-size:clamp(32px,4vw,52px); font-weight:900; letter-spacing:-2px; line-height:1.05; color:var(--dark-gray); text-align:center; margin-bottom:16px; }
+.section-title span { color:var(--teal); }
+.section-sub { font-size:17px; color:var(--mid-gray); text-align:center; max-width:580px; margin:0 auto 56px; line-height:1.65; }
+
+/* ─── OVERVIEW BAND ─── */
+#overview { background:var(--dark-gray); padding:100px 24px; }
+.ov-inner { max-width:1100px; margin:0 auto; text-align:center; }
+.ov-inner .section-title { color:#fff; }
+.ov-inner .section-eyebrow { color:var(--teal-light); }
+.ov-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:1px; margin-top:60px; border-radius:var(--radius); overflow:hidden; }
+.ov-card { background:rgba(255,255,255,0.04); padding:48px 28px; text-align:center; transition:background 0.3s; cursor:default; }
+.ov-card:hover { background:rgba(0,168,120,0.14); }
+.ov-icon { font-size:36px; margin-bottom:14px; }
+.ov-title { font-family:'Sora',sans-serif; font-size:16px; font-weight:700; color:#fff; margin-bottom:8px; letter-spacing:-0.2px; }
+.ov-desc { font-size:13px; color:rgba(255,255,255,0.45); line-height:1.65; }
+
+/* ─── ABOUT ─── */
+#about { background:var(--white); }
+.about-grid { display:grid; grid-template-columns:1fr 1fr; gap:80px; align-items:center; }
+.about-left .section-title { text-align:left; }
+.about-left .section-eyebrow { text-align:left; }
+.about-left p { font-size:16.5px; color:var(--mid-gray); line-height:1.8; margin-bottom:20px; }
+.about-left p strong { color:var(--dark-gray); font-weight:600; }
+.about-quote { background:var(--off-white); border-radius:var(--radius); padding:28px 32px 24px; margin:28px 0; border-left:4px solid var(--teal); }
+.about-quote blockquote { font-size:17px; font-style:italic; color:var(--dark-gray); line-height:1.7; }
+.about-quote cite { display:block; margin-top:10px; font-size:12.5px; color:var(--teal); font-weight:700; font-style:normal; letter-spacing:0.3px; }
+.about-right { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+.pillar-card { background:var(--off-white); border-radius:var(--radius); padding:26px 22px; transition:all 0.3s; border:1px solid transparent; }
+.pillar-card:hover { border-color:rgba(0,168,120,0.2); transform:translateY(-3px); box-shadow:var(--shadow); }
+.pillar-icon { font-size:26px; margin-bottom:10px; }
+.pillar-name { font-family:'Sora',sans-serif; font-size:14.5px; font-weight:700; color:var(--dark-gray); margin-bottom:6px; }
+.pillar-desc { font-size:12.5px; color:var(--mid-gray); line-height:1.6; }
+.values-chips { display:flex; flex-wrap:wrap; gap:8px; margin-top:24px; }
+.chip { background:var(--teal-bg); border:1px solid rgba(0,168,120,0.2); padding:6px 14px; border-radius:20px; font-size:12.5px; font-weight:700; color:var(--teal); }
+
+/* ─── DIVISIONS ─── */
+#divisions { background:var(--off-white); }
+.divisions-grid { display:grid; grid-template-columns:1fr 1fr; gap:18px; }
+.div-card { background:#fff; border-radius:var(--radius-lg); padding:44px 36px; position:relative; overflow:hidden; transition:all 0.3s; border:1px solid var(--light-gray); }
+.div-card:hover { transform:translateY(-4px); box-shadow:var(--shadow-lg); border-color:rgba(0,168,120,0.15); }
+.div-card.featured { background:var(--dark-gray); border-color:transparent; }
+.div-number { font-family:'Sora',sans-serif; font-size:80px; font-weight:900; color:rgba(0,0,0,0.04); line-height:1; position:absolute; top:16px; right:20px; letter-spacing:-4px; }
+.div-card.featured .div-number { color:rgba(255,255,255,0.04); }
+.div-chip { display:inline-block; background:rgba(0,168,120,0.1); color:var(--teal); padding:4px 12px; border-radius:10px; font-size:10.5px; font-weight:800; letter-spacing:1px; text-transform:uppercase; margin-bottom:16px; }
+.div-card.featured .div-chip { background:rgba(0,200,150,0.15); color:var(--teal-light); }
+.div-icon { font-size:34px; margin-bottom:14px; display:block; }
+.div-title { font-family:'Sora',sans-serif; font-size:26px; font-weight:800; letter-spacing:-0.8px; color:var(--dark-gray); margin-bottom:10px; }
+.div-card.featured .div-title { color:#fff; }
+.div-desc { font-size:14.5px; color:var(--mid-gray); line-height:1.7; margin-bottom:24px; }
+.div-card.featured .div-desc { color:rgba(255,255,255,0.55); }
+.div-tags { display:flex; flex-wrap:wrap; gap:7px; }
+.div-tag { background:var(--off-white); padding:5px 11px; border-radius:9px; font-size:11.5px; font-weight:600; color:var(--dark-gray); }
+.div-card.featured .div-tag { background:rgba(255,255,255,0.08); color:rgba(255,255,255,0.75); }
+
+/* ─── PRODUCTS CAROUSEL ─── */
+#products { background:var(--white); }
+.carousel-wrap { position:relative; overflow:hidden; margin:0 -24px; }
+.carousel-track { display:flex; gap:20px; padding:16px 24px 24px; overflow-x:auto; scroll-behavior:smooth; scrollbar-width:none; cursor:grab; }
+.carousel-track::-webkit-scrollbar { display:none; }
+.carousel-track.grabbing { cursor:grabbing; }
+.prod-card {
+  background:var(--off-white);
+  border-radius:var(--radius-lg);
+  overflow:hidden;
+  flex:0 0 320px;
+  transition:all 0.3s;
+  border:1px solid var(--light-gray);
+  position:relative;
+}
+.prod-card:hover { transform:translateY(-5px); box-shadow:var(--shadow-lg); border-color:rgba(0,168,120,0.2); }
+.prod-visual {
+  height:190px; display:flex; align-items:center; justify-content:center;
+  position:relative; overflow:hidden;
+}
+.prod-visual-bess { background:linear-gradient(135deg, #e8f8f3 0%, #c8ede3 100%); }
+.prod-visual-inv { background:linear-gradient(135deg, #e8f0f8 0%, #c0d8f0 100%); }
+.prod-visual-bldc { background:linear-gradient(135deg, #eff6ff 0%, #bfdbfe 100%); }
+.prod-visual-iot { background:linear-gradient(135deg, #f0fdf4 0%, #bbf7d0 100%); }
+.prod-visual-soil { background:linear-gradient(135deg, #fffbeb 0%, #fde68a 100%); }
+.prod-visual-cube { background:linear-gradient(135deg, #f5f3ff 0%, #ddd6fe 100%); }
+.prod-visual-mppt { background:linear-gradient(135deg, #fffbeb 0%, #fcd34d 100%); }
+.prod-visual-aqua { background:linear-gradient(135deg, #f0f9ff 0%, #bae6fd 100%); }
+.prod-visual-ev { background:linear-gradient(135deg, #f0fdf4 0%, #86efac 100%); }
+.prod-visual-street { background:linear-gradient(160deg, #1a2035 0%, #0d3520 100%); }
+.pv-icon { font-size:56px; }
+.pv-glow { position:absolute; width:120px; height:120px; border-radius:50%; filter:blur(35px); opacity:0.35; }
+.pv-glow-teal { background:var(--teal); }
+.pv-glow-blue { background:#60a5fa; }
+.pv-glow-amber { background:#fbbf24; }
+.pv-glow-purple { background:#a78bfa; }
+.prod-badge-l { position:absolute; top:12px; left:12px; background:rgba(255,255,255,0.9); backdrop-filter:blur(8px); padding:4px 10px; border-radius:20px; font-size:11px; font-weight:700; color:var(--dark-gray); }
+.prod-badge-r { position:absolute; top:12px; right:12px; background:var(--teal); color:#fff; padding:4px 10px; border-radius:20px; font-size:10.5px; font-weight:800; }
+.prod-body { padding:22px 24px; }
+.prod-category { font-size:10.5px; font-weight:800; color:var(--teal); letter-spacing:1.2px; text-transform:uppercase; margin-bottom:5px; }
+.prod-name { font-family:'Sora',sans-serif; font-size:18px; font-weight:800; color:var(--dark-gray); letter-spacing:-0.3px; margin-bottom:7px; }
+.prod-desc { font-size:13px; color:var(--mid-gray); line-height:1.6; margin-bottom:14px; }
+.prod-specs { display:flex; flex-wrap:wrap; gap:6px; }
+.prod-spec { background:#fff; border:1px solid var(--light-gray); padding:4px 9px; border-radius:8px; font-size:11.5px; font-weight:600; color:var(--dark-gray); }
+
+/* Carousel nav */
+.carousel-nav { display:flex; justify-content:center; gap:10px; margin-top:8px; }
+.carousel-btn { width:40px; height:40px; border-radius:50%; border:1.5px solid var(--light-gray); background:#fff; cursor:pointer; font-size:18px; display:flex; align-items:center; justify-content:center; transition:all 0.2s; }
+.carousel-btn:hover { background:var(--teal); border-color:var(--teal); color:#fff; }
+
+/* ─── FEATURED BESS ─── */
+.featured-product { background:var(--off-white); border-radius:var(--radius-lg); padding:64px 56px; display:grid; grid-template-columns:1fr 1fr; gap:72px; align-items:center; border:1px solid var(--light-gray); }
+.feat-left .section-title { text-align:left; }
+.feat-left .section-eyebrow { text-align:left; }
+.feat-desc { font-size:16.5px; color:var(--mid-gray); line-height:1.8; margin-bottom:28px; }
+.feat-features { display:flex; flex-direction:column; gap:11px; }
+.feat-feat { display:flex; align-items:flex-start; gap:12px; }
+.feat-check { width:22px; height:22px; background:var(--teal); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:11px; color:#fff; flex-shrink:0; margin-top:2px; }
+.feat-feat-text { font-size:14.5px; color:var(--dark-gray); font-weight:500; line-height:1.55; }
+.bess-viz { background:linear-gradient(135deg, #0f2027, #1a3a2a, #0f3460); border-radius:var(--radius); padding:36px; color:#fff; }
+.bess-viz-title { font-family:'Sora',sans-serif; font-size:28px; font-weight:900; color:var(--teal-light); letter-spacing:-1px; }
+.bess-viz-sub { font-size:12px; color:rgba(255,255,255,0.45); margin-bottom:28px; }
+.bess-rack { display:flex; gap:7px; justify-content:center; margin-bottom:24px; }
+.bess-rack-unit { width:24px; height:72px; background:rgba(0,200,150,0.15); border:1px solid rgba(0,200,150,0.35); border-radius:6px; display:flex; flex-direction:column; align-items:center; justify-content:flex-end; padding-bottom:5px; gap:3px; }
+.bess-rack-unit span { width:14px; height:2.5px; background:var(--teal-light); border-radius:2px; opacity:0.75; }
+.bess-specs { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; }
+.bess-spec { background:rgba(255,255,255,0.05); border-radius:10px; padding:12px 10px; }
+.bess-spec-val { font-family:'Sora',sans-serif; font-size:17px; font-weight:800; color:var(--teal-light); letter-spacing:-0.5px; }
+.bess-spec-key { font-size:10px; color:rgba(255,255,255,0.4); margin-top:2px; text-transform:uppercase; letter-spacing:0.5px; }
+
+/* ─── INVERTER SHOWCASE ─── */
+.inverter-showcase { display:grid; grid-template-columns:repeat(3,1fr); gap:18px; margin-top:56px; }
+.inv-card { background:var(--off-white); border-radius:var(--radius); overflow:hidden; border:1px solid var(--light-gray); }
+.inv-header { padding:40px 28px; text-align:center; }
+.inv-header-1 { background:linear-gradient(135deg, #e8f4f0, #c8e6de); }
+.inv-header-2 { background:linear-gradient(135deg, #d1fae5, #6ee7b7); }
+.inv-header-3 { background:linear-gradient(135deg, #a7f3d0, #34d399); }
+.inv-model { font-family:'Sora',sans-serif; font-size:38px; font-weight:900; color:var(--dark-gray); letter-spacing:-2px; }
+.inv-kva { font-size:13px; color:var(--teal-dark); font-weight:600; margin-top:4px; }
+.inv-body { padding:22px 26px; }
+.inv-body table { width:100%; border-collapse:collapse; font-size:13px; }
+.inv-body tr { border-bottom:1px solid var(--light-gray); }
+.inv-body tr:last-child { border-bottom:none; }
+.inv-body td { padding:8px 0; }
+.inv-body td:first-child { color:var(--mid-gray); }
+.inv-body td:last-child { font-weight:700; color:var(--dark-gray); text-align:right; }
+.inv-feats { margin-top:14px; display:flex; flex-wrap:wrap; gap:6px; }
+.inv-feat { background:#fff; padding:4px 9px; border-radius:7px; font-size:11px; font-weight:600; color:var(--dark-gray); border:1px solid var(--light-gray); }
+
+/* ─── CUSTOMER MARQUEE ─── */
+#customers { background:var(--off-white); }
+.cust-marquee-outer { overflow:hidden; position:relative; margin:0 -24px; }
+.cust-marquee-outer::before, .cust-marquee-outer::after {
+  content:''; position:absolute; top:0; bottom:0; width:80px; z-index:2; pointer-events:none;
+}
+.cust-marquee-outer::before { left:0; background:linear-gradient(to right, var(--off-white), transparent); }
+.cust-marquee-outer::after { right:0; background:linear-gradient(to left, var(--off-white), transparent); }
+.cust-marquee { display:flex; gap:16px; padding:8px 24px; animation:marquee-anim 30s linear infinite; width:max-content; }
+.cust-marquee:hover { animation-play-state:paused; }
+@keyframes marquee-anim { 0%{transform:translateX(0)} 100%{transform:translateX(-50%)} }
+.cust-card { background:#fff; border-radius:var(--radius); padding:24px 28px; flex:0 0 280px; border:1px solid var(--light-gray); transition:all 0.3s; }
+.cust-card:hover { border-color:rgba(0,168,120,0.3); transform:translateY(-3px); box-shadow:var(--shadow); }
+.cust-sector { font-size:10.5px; font-weight:800; color:var(--teal); letter-spacing:1px; text-transform:uppercase; margin-bottom:6px; }
+.cust-name { font-family:'Sora',sans-serif; font-size:18px; font-weight:800; color:var(--dark-gray); letter-spacing:-0.3px; margin-bottom:6px; }
+.cust-desc { font-size:12.5px; color:var(--mid-gray); line-height:1.6; }
+.cust-badge { display:inline-block; background:var(--teal-bg); color:var(--teal); padding:3px 10px; border-radius:7px; font-size:11.5px; font-weight:700; margin-top:10px; }
+
+/* ══════════════════════════════
+   JOURNEY — HORIZONTAL PHASE CARDS
+══════════════════════════════ */
+#milestones { background: linear-gradient(160deg, #f0fdf8 0%, #fff 40%, #f5f9ff 100%); overflow:hidden; position:relative; }
+#milestones::before {
+  content:''; position:absolute; inset:0;
+  background-image: radial-gradient(circle, rgba(0,168,120,0.06) 1px, transparent 1px);
+  background-size:30px 30px; pointer-events:none;
+}
+/* Vertical spine — GONE. New: horizontal track */
+.timeline { position:relative; max-width:1100px; margin:0 auto; padding-top:48px; }
+.timeline-track {
+  display:grid; grid-template-columns:repeat(4,1fr); gap:0;
+  position:relative;
+}
+/* Connecting line across phases */
+.timeline-track::before {
+  content:''; position:absolute;
+  top:38px; left:12.5%; right:12.5%; height:2px;
+  background: linear-gradient(90deg, var(--teal), #0099ff 50%, var(--amber));
+  z-index:0;
+}
+/* Phase card */
+.milestone {
+  display:flex; flex-direction:column; align-items:center;
+  padding:0 12px 0; position:relative;
+  animation: none; /* reset */
+}
+/* Dot on the line */
+.m-spine-dot {
+  position:relative; left:auto; top:auto;
+  width:18px; height:18px; border-radius:50%;
+  background: var(--teal); border:3px solid #fff;
+  box-shadow:0 0 0 3px var(--teal), 0 0 20px rgba(0,168,120,0.5);
+  z-index:2; flex-shrink:0; margin-bottom:20px;
+  animation: spine-pulse 2.5s ease-in-out infinite;
+}
+.m-spine-dot.amber {
+  background:var(--amber); box-shadow:0 0 0 3px var(--amber), 0 0 20px rgba(255,106,0,0.5);
+}
+@keyframes spine-pulse {
+  0%,100%{box-shadow:0 0 0 3px var(--teal),0 0 14px rgba(0,168,120,0.35)}
+  50%{box-shadow:0 0 0 5px rgba(0,168,120,0.3),0 0 28px rgba(0,168,120,0.5)}
+}
+/* Date badge above dot */
+.m-dot-wrap {
+  width:auto; flex-shrink:0; display:flex; flex-direction:column;
+  align-items:center; padding:0; gap:0; margin-bottom:16px;
+}
+.m-date-badge {
+  background: linear-gradient(135deg, #0d1117, #1f2937);
+  color:#fff; padding:8px 18px; border-radius:10px;
+  font-size:13px; font-weight:900; white-space:nowrap;
+  font-family:'Sora',sans-serif; letter-spacing:0.5px;
+  border:1px solid rgba(0,168,120,0.3);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.08);
+  position:relative; text-align:center;
+  /* Vertical connector down to dot */
+}
+.m-date-badge::after { display:none; }
+.m-date-badge.amber-date {
+  background: linear-gradient(135deg, #92400e, #d97706);
+  border-color:rgba(251,191,36,0.4);
+  box-shadow: 0 4px 16px rgba(245,158,11,0.3);
+}
+/* Phase number big label */
+.m-phase-num {
+  font-family:'Sora',sans-serif;
+  font-size:80px; font-weight:900; line-height:1;
+  position:absolute; top:-12px; right:-10px; z-index:0;
+  opacity:0.04; color:var(--teal); letter-spacing:-4px; pointer-events:none;
+}
+/* Content card */
+.m-content {
+  background: rgba(255,255,255,0.85);
+  backdrop-filter: blur(16px);
+  border-radius:20px; padding:24px 22px;
+  border:1px solid rgba(0,168,120,0.1);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.06);
+  width:100%; position:relative; overflow:hidden;
+  transition:all 0.35s cubic-bezier(0.16,1,0.3,1);
+}
+.m-content:hover {
+  transform:translateY(-6px);
+  box-shadow: 0 20px 48px rgba(0,168,120,0.12), 0 0 0 1px rgba(0,168,120,0.15);
+  border-color:rgba(0,168,120,0.25);
+}
+.m-content::before { display:none; }
+.m-content::after { display:none; }
+.m-accent-bar {
+  position:absolute; top:0; left:0; right:0; height:3px;
+  background: linear-gradient(90deg, var(--teal), #0099ff);
+  border-radius:20px 20px 0 0;
+  transform:scaleX(1); /* always visible now */
+}
+.m-phase {
+  font-size:10px; font-weight:800; color:var(--teal);
+  letter-spacing:1.5px; text-transform:uppercase;
+  margin-bottom:8px; display:flex; align-items:center; gap:5px;
+}
+.m-phase::before { display:none; }
+.m-heading {
+  font-family:'Sora',sans-serif; font-size:17px; font-weight:800;
+  color:var(--dark-gray); letter-spacing:-0.3px; margin-bottom:12px; line-height:1.2;
+}
+.m-points { list-style:none; }
+.m-points li {
+  font-size:12.5px; color:var(--mid-gray); line-height:1.65;
+  padding-left:16px; position:relative; margin-bottom:4px;
+}
+.m-points li::before {
+  content:'›'; position:absolute; left:0; color:var(--teal);
+  font-size:15px; line-height:1.4; font-weight:900;
+}
+/* Journey scroll-in animation */
+.milestone { opacity:0; transform:translateY(30px); transition:opacity 0.6s, transform 0.6s cubic-bezier(0.16,1,0.3,1); }
+.milestone.m-visible { opacity:1; transform:translateY(0); }
+.milestone:nth-child(1) { transition-delay:0s; }
+.milestone:nth-child(2) { transition-delay:0.12s; }
+.milestone:nth-child(3) { transition-delay:0.24s; }
+.milestone:nth-child(4) { transition-delay:0.36s; }
+@media(max-width:900px) {
+  .timeline-track { grid-template-columns:1fr 1fr; }
+  .timeline-track::before { display:none; }
+}
+@media(max-width:540px) {
+  .timeline-track { grid-template-columns:1fr; }
+}
+
+/* ══════════════════════════════
+   TEAM SLIDER
+══════════════════════════════ */
+.team-grid { display:none; } /* replaced by slider */
+.team-slider-wrap { position:relative; overflow:hidden; margin-top:8px; }
+.team-slider-track {
+  display:flex; gap:20px;
+  transition:transform 0.5s cubic-bezier(0.16,1,0.3,1);
+  will-change:transform;
+}
+.team-card {
+  flex:0 0 320px;
+  background:#fff; border-radius:var(--radius-lg);
+  overflow:hidden; border:1px solid var(--light-gray);
+  transition:all 0.3s;
+  position:relative;
+}
+.team-card:hover { transform:translateY(-5px); box-shadow:0 20px 48px rgba(0,0,0,0.1); border-color:rgba(0,168,120,0.2); }
+.team-card::before {
+  content:''; position:absolute; top:0; left:0; right:0; height:3px;
+  background: linear-gradient(90deg, var(--teal), #0099ff);
+  transform:scaleX(0); transform-origin:left; transition:transform 0.4s;
+}
+.team-card:hover::before { transform:scaleX(1); }
+.team-top {
+  padding:28px 24px 20px; border-bottom:1px solid var(--light-gray);
+  background:linear-gradient(135deg, #f8fffe, #f0fdf8);
+}
+.team-avatar {
+  width:56px; height:56px; border-radius:50%;
+  display:flex; align-items:center; justify-content:center;
+  font-family:'Sora',sans-serif; font-size:20px; font-weight:900;
+  color:#fff; margin-bottom:14px;
+  box-shadow:0 4px 16px rgba(0,0,0,0.15);
+}
+.av-1{background:linear-gradient(135deg,var(--teal),var(--teal-light))}
+.av-2{background:linear-gradient(135deg,#0066CC,#38bdf8)}
+.av-3{background:linear-gradient(135deg,#7c3aed,#a78bfa)}
+.av-4{background:linear-gradient(135deg,#dc2626,#f87171)}
+.av-5{background:linear-gradient(135deg,#d97706,#fbbf24)}
+.av-6{background:linear-gradient(135deg,#059669,#34d399)}
+.team-name { font-family:'Sora',sans-serif; font-size:17px; font-weight:800; color:var(--dark-gray); letter-spacing:-0.2px; margin-bottom:3px; }
+.team-role { font-size:11px; font-weight:800; color:var(--teal); letter-spacing:0.8px; text-transform:uppercase; }
+.team-body { padding:18px 24px 22px; }
+.team-body p { font-size:13px; color:var(--mid-gray); line-height:1.7; }
+/* Slider nav */
+.team-slider-nav {
+  display:flex; align-items:center; justify-content:center;
+  gap:14px; margin-top:28px;
+}
+.team-nav-btn {
+  width:40px; height:40px; border-radius:50%;
+  border:1.5px solid var(--light-gray); background:#fff;
+  cursor:pointer; font-size:18px;
+  display:flex; align-items:center; justify-content:center;
+  transition:all 0.2s; color:var(--dark-gray);
+}
+.team-nav-btn:hover { background:var(--teal); border-color:var(--teal); color:#fff; box-shadow:0 4px 16px rgba(0,168,120,0.3); }
+.team-dots { display:flex; gap:7px; }
+.team-dot {
+  width:8px; height:8px; border-radius:50%;
+  background:var(--light-gray); cursor:pointer;
+  transition:all 0.3s;
+}
+.team-dot.active { width:24px; border-radius:4px; background:var(--teal); }
+
+/* ─── LEADERSHIP ─── */
+#leadership { background:var(--off-white); }
+.team-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:18px; }
+.team-card { background:#fff; border-radius:var(--radius-lg); overflow:hidden; transition:all 0.3s; border:1px solid var(--light-gray); }
+.team-card:hover { transform:translateY(-4px); box-shadow:var(--shadow-lg); }
+.team-top { padding:28px 24px; border-bottom:1px solid var(--light-gray); }
+.team-avatar { width:56px; height:56px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-family:'Sora',sans-serif; font-size:20px; font-weight:900; color:#fff; margin-bottom:14px; }
+.av-1 { background:linear-gradient(135deg, var(--teal), var(--teal-light)); }
+.av-2 { background:linear-gradient(135deg, #0066CC, #38bdf8); }
+.av-3 { background:linear-gradient(135deg, #7c3aed, #a78bfa); }
+.av-4 { background:linear-gradient(135deg, var(--amber), #fbbf24); }
+.av-5 { background:linear-gradient(135deg, #db2777, #fb7185); }
+.av-6 { background:linear-gradient(135deg, #059669, #34d399); }
+.team-name { font-family:'Sora',sans-serif; font-size:17px; font-weight:800; color:var(--dark-gray); letter-spacing:-0.2px; margin-bottom:3px; }
+.team-role { font-size:11px; font-weight:800; color:var(--teal); letter-spacing:0.8px; text-transform:uppercase; }
+.team-body { padding:18px 24px 22px; }
+.team-body p { font-size:13px; color:var(--mid-gray); line-height:1.7; }
+
+/* ─── FACILITIES ─── */
+#facilities { background:var(--dark-gray); color:#fff; padding:100px 24px; }
+.facilities-inner .section-title { color:#fff; }
+.facilities-inner .section-eyebrow { color:var(--teal-light); }
+.fac-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:2px; margin-top:56px; border-radius:var(--radius); overflow:hidden; }
+.fac-card { background:rgba(255,255,255,0.04); padding:44px 32px; transition:background 0.3s; }
+.fac-card:hover { background:rgba(0,168,120,0.12); }
+.fac-num { font-family:'Sora',sans-serif; font-size:42px; font-weight:900; color:var(--teal-light); letter-spacing:-2px; line-height:1; }
+.fac-unit { font-size:12px; color:rgba(255,255,255,0.35); font-weight:500; margin-bottom:14px; }
+.fac-divider { width:28px; height:2px; background:var(--teal); margin:14px 0; }
+.fac-desc { font-size:13.5px; color:rgba(255,255,255,0.45); line-height:1.7; }
+
+/* ─── STREET LIGHT & EV ─── */
+#streetlight { background:var(--white); }
+.streetlight-grid { display:grid; grid-template-columns:1fr 1fr; gap:72px; align-items:center; }
+.streetlight-visual { border-radius:var(--radius-lg); overflow:hidden; background:linear-gradient(160deg, #0d1b2a, #1b2838, #0d2b1e); height:380px; display:flex; align-items:center; justify-content:center; position:relative; }
+.sl-pole { width:5px; height:260px; background:linear-gradient(to bottom, #4a5568, #2d3748); border-radius:3px; position:relative; }
+.sl-arm { position:absolute; top:0; right:0; width:72px; height:5px; background:#4a5568; border-radius:3px; transform:translateY(-50%); }
+.sl-light { position:absolute; right:-16px; top:-24px; width:52px; height:18px; background:linear-gradient(to bottom, #fbbf24, #f59e0b); border-radius:4px; box-shadow:0 0 28px rgba(251,191,36,0.8), 0 0 60px rgba(251,191,36,0.35); }
+.sl-beam { position:absolute; top:-8px; left:50%; transform:translateX(-50%); width:90px; height:70px; background:radial-gradient(ellipse, rgba(251,191,36,0.28), transparent 70%); }
+.sl-glow-bg { position:absolute; inset:0; background:radial-gradient(ellipse at 70% 30%, rgba(251,191,36,0.07), transparent 55%); }
+.sl-chips { position:absolute; bottom:20px; left:20px; right:20px; display:flex; gap:7px; flex-wrap:wrap; }
+.sl-chip { background:rgba(255,255,255,0.08); backdrop-filter:blur(10px); padding:7px 12px; border-radius:9px; font-size:11.5px; color:rgba(255,255,255,0.75); font-weight:600; }
+.streetlight-content p { font-size:16px; color:var(--mid-gray); line-height:1.8; margin-bottom:20px; }
+.sl-table { background:var(--off-white); border-radius:var(--radius); padding:22px; border:1px solid var(--light-gray); }
+.sl-table table { width:100%; border-collapse:collapse; font-size:12.5px; }
+.sl-table th { font-size:10.5px; font-weight:800; color:var(--teal); letter-spacing:1px; text-transform:uppercase; padding:0 0 10px; text-align:left; }
+.sl-table th:not(:first-child) { text-align:center; }
+.sl-table td { padding:9px 0; border-top:1px solid var(--light-gray); color:var(--dark-gray); font-weight:500; }
+.sl-table td:not(:first-child) { text-align:center; font-weight:700; }
+.sl-table td:first-child { color:var(--mid-gray); }
+
+#ev { background:var(--off-white); }
+.ev-grid { display:grid; grid-template-columns:1fr 1fr; gap:72px; align-items:center; }
+.ev-visual { background:linear-gradient(135deg, #064e3b, #065f46, #0d9488); border-radius:var(--radius-lg); padding:44px; text-align:center; }
+.ev-icon-big { font-size:72px; margin-bottom:12px; }
+.ev-viz-title { font-family:'Sora',sans-serif; font-size:24px; font-weight:900; color:#fff; letter-spacing:-1px; margin-bottom:4px; }
+.ev-viz-sub { font-size:12.5px; color:rgba(255,255,255,0.45); margin-bottom:28px; }
+.ev-feats { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+.ev-feat-chip { background:rgba(255,255,255,0.08); border-radius:10px; padding:11px; font-size:12px; color:rgba(255,255,255,0.7); font-weight:600; text-align:center; }
+
+/* ─── FAQ ─── */
+#faq { background:var(--off-white); }
+.faq-list { max-width:700px; margin:0 auto; display:flex; flex-direction:column; gap:7px; }
+.faq-item { background:#fff; border-radius:var(--radius); overflow:hidden; border:1px solid var(--light-gray); transition:border-color 0.2s; }
+.faq-item.open { border-color:rgba(0,168,120,0.3); }
+.faq-q { padding:20px 26px; cursor:pointer; display:flex; justify-content:space-between; align-items:center; gap:16px; }
+.faq-q:hover { background:#fafafa; }
+.faq-q-text { font-size:15.5px; font-weight:600; color:var(--dark-gray); letter-spacing:-0.1px; }
+.faq-icon { width:26px; height:26px; background:var(--off-white); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:16px; color:var(--mid-gray); flex-shrink:0; transition:all 0.3s; font-weight:300; }
+.faq-item.open .faq-icon { transform:rotate(45deg); background:var(--teal); color:#fff; }
+.faq-a { max-height:0; overflow:hidden; transition:max-height 0.35s ease; }
+.faq-a-inner { padding:16px 26px 22px; font-size:14.5px; color:var(--mid-gray); line-height:1.8; border-top:1px solid var(--light-gray); }
+
+/* ─── CONTACT ─── */
+#contact { background:var(--white); }
+.contact-grid { display:grid; grid-template-columns:1fr 1.3fr; gap:80px; align-items:start; }
+.contact-left h3 { font-family:'Sora',sans-serif; font-size:30px; font-weight:800; color:var(--dark-gray); letter-spacing:-1px; margin-bottom:8px; }
+.contact-left p { font-size:16px; color:var(--mid-gray); margin-bottom:36px; }
+.contact-item { display:flex; gap:14px; align-items:flex-start; margin-bottom:24px; }
+.contact-ico { width:42px; height:42px; background:var(--off-white); border-radius:12px; display:flex; align-items:center; justify-content:center; font-size:18px; flex-shrink:0; border:1px solid var(--light-gray); }
+.contact-info strong { display:block; font-size:11px; font-weight:800; color:var(--teal); letter-spacing:1px; text-transform:uppercase; margin-bottom:3px; }
+.contact-info span { font-size:14.5px; color:var(--dark-gray); font-weight:500; }
+.contact-form { background:var(--off-white); border-radius:var(--radius-lg); padding:36px; border:1px solid var(--light-gray); }
+.form-row { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+.form-group { display:flex; flex-direction:column; gap:7px; margin-bottom:14px; }
+.form-group label { font-size:11.5px; font-weight:700; color:var(--dark-gray); letter-spacing:0.4px; }
+.form-group input, .form-group select, .form-group textarea {
+  background:#fff; border:1.5px solid var(--light-gray); color:var(--dark-gray);
+  padding:13px 15px; border-radius:11px; font-family:inherit; font-size:14.5px;
+  outline:none; transition:all 0.2s; resize:vertical;
+}
+.form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+  border-color:var(--teal); box-shadow:0 0 0 3px rgba(0,168,120,0.1);
+}
+.form-submit { background:var(--teal); color:#fff; width:100%; padding:15px; border-radius:11px; font-family:inherit; font-size:15px; font-weight:700; border:none; cursor:pointer; transition:all 0.2s; }
+.form-submit:hover { background:var(--teal-dark); transform:translateY(-1px); box-shadow:0 8px 24px rgba(0,168,120,0.35); }
+.form-success { display:none; background:rgba(0,168,120,0.08); border:1.5px solid rgba(0,168,120,0.25); padding:14px; border-radius:11px; font-size:13.5px; font-weight:700; color:var(--teal); margin-top:12px; text-align:center; }
+
+/* ─── FOOTER ─── */
+footer { background:var(--dark-gray); padding:72px 24px 36px; }
+.footer-inner { max-width:1100px; margin:0 auto; }
+.footer-top { display:grid; grid-template-columns:1.5fr 1fr 1fr 1fr; gap:56px; margin-bottom:56px; }
+.footer-brand p { font-size:13px; color:rgba(255,255,255,0.38); line-height:1.7; max-width:200px; margin-top:14px; }
+.footer-col h4 { font-size:11px; font-weight:800; color:rgba(255,255,255,0.35); letter-spacing:1.2px; text-transform:uppercase; margin-bottom:18px; }
+.footer-col a { display:block; color:rgba(255,255,255,0.6); font-size:13.5px; text-decoration:none; margin-bottom:9px; transition:color 0.2s; }
+.footer-col a:hover { color:#fff; }
+.footer-bottom { border-top:1px solid rgba(255,255,255,0.07); padding-top:28px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:14px; }
+.footer-copy { font-size:12px; color:rgba(255,255,255,0.28); }
+.footer-legal { display:flex; gap:18px; }
+.footer-legal a { font-size:12px; color:rgba(255,255,255,0.28); text-decoration:none; transition:color 0.2s; }
+.footer-legal a:hover { color:rgba(255,255,255,0.55); }
+
+/* ─── BACK TO TOP ─── */
+#back-to-top {
+  position:fixed; bottom:28px; right:28px; z-index:900;
+  width:46px; height:46px; border-radius:50%;
+  background:var(--dark-gray); color:#fff;
+  border:none; cursor:pointer; font-size:20px;
+  display:flex; align-items:center; justify-content:center;
+  box-shadow:0 4px 20px rgba(0,0,0,0.2);
+  opacity:0; transform:translateY(12px);
+  transition:all 0.3s;
+  pointer-events:none;
+}
+#back-to-top.visible { opacity:1; transform:translateY(0); pointer-events:all; }
+#back-to-top:hover { background:var(--teal); transform:translateY(-2px); }
+
+/* ─── CHAT WIDGET ─── */
+#chat-btn {
+  position:fixed; bottom:28px; left:28px; z-index:900;
+  width:56px; height:56px; border-radius:28px;
+  background:var(--teal); color:#fff;
+  border:none; cursor:pointer; font-size:24px;
+  display:flex; align-items:center; justify-content:center;
+  box-shadow:0 6px 24px rgba(0,168,120,0.4);
+  transition:all 0.3s;
+}
+#chat-btn:hover { transform:scale(1.08); box-shadow:0 10px 32px rgba(0,168,120,0.5); }
+#chat-btn .chat-notif { position:absolute; top:-3px; right:-3px; width:14px; height:14px; background:#ef4444; border-radius:50%; border:2px solid #fff; }
+.chat-panel {
+  position:fixed; bottom:96px; left:28px; z-index:900;
+  width:320px; background:#fff; border-radius:var(--radius-lg);
+  box-shadow:0 20px 60px rgba(0,0,0,0.15);
+  border:1px solid var(--light-gray);
+  overflow:hidden;
+  transform:translateY(20px) scale(0.95);
+  opacity:0; pointer-events:none;
+  transform-origin:bottom left;
+  transition:all 0.25s cubic-bezier(0.16,1,0.3,1);
+}
+.chat-panel.open { opacity:1; transform:translateY(0) scale(1); pointer-events:all; }
+.chat-header { background:var(--teal); padding:18px 20px; display:flex; align-items:center; gap:12px; }
+.chat-avatar { width:36px; height:36px; background:rgba(255,255,255,0.2); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:18px; }
+.chat-header-info h4 { font-family:'Sora',sans-serif; font-size:14px; font-weight:700; color:#fff; }
+.chat-header-info p { font-size:11.5px; color:rgba(255,255,255,0.75); }
+.chat-online { display:flex; align-items:center; gap:5px; font-size:11px; color:rgba(255,255,255,0.8); margin-top:2px; }
+.chat-online::before { content:''; width:6px; height:6px; background:#4ade80; border-radius:50%; }
+.chat-body { padding:18px 16px; max-height:220px; overflow-y:auto; display:flex; flex-direction:column; gap:10px; }
+.chat-msg { max-width:82%; }
+.chat-msg.bot { align-self:flex-start; }
+.chat-msg.user { align-self:flex-end; }
+.chat-bubble { padding:10px 14px; border-radius:16px; font-size:13.5px; line-height:1.55; }
+.chat-msg.bot .chat-bubble { background:var(--off-white); color:var(--dark-gray); border-radius:4px 16px 16px 16px; }
+.chat-msg.user .chat-bubble { background:var(--teal); color:#fff; border-radius:16px 4px 16px 16px; }
+.chat-time { font-size:10px; color:var(--mid-gray); margin-top:4px; padding:0 4px; }
+.chat-footer { padding:12px 14px; border-top:1px solid var(--light-gray); display:flex; gap:8px; }
+.chat-input { flex:1; border:1.5px solid var(--light-gray); border-radius:22px; padding:9px 14px; font-family:inherit; font-size:13.5px; outline:none; transition:border-color 0.2s; }
+.chat-input:focus { border-color:var(--teal); }
+.chat-send { width:36px; height:36px; background:var(--teal); border:none; border-radius:50%; cursor:pointer; color:#fff; font-size:16px; display:flex; align-items:center; justify-content:center; transition:all 0.2s; flex-shrink:0; }
+.chat-send:hover { background:var(--teal-dark); }
+.chat-quick { padding:10px 14px 0; display:flex; flex-wrap:wrap; gap:6px; }
+.chat-quick-btn { background:var(--teal-bg); border:1px solid rgba(0,168,120,0.2); color:var(--teal); padding:5px 11px; border-radius:16px; font-size:11.5px; font-weight:600; cursor:pointer; transition:all 0.2s; border:none; }
+.chat-quick-btn:hover { background:var(--teal); color:#fff; }
+
+/* ─── COOKIE ─── */
+#cookie-banner { position:fixed; bottom:20px; right:20px; z-index:999; max-width:360px; background:#fff; border-radius:var(--radius); padding:22px 26px; box-shadow:var(--shadow-lg); border:1px solid var(--light-gray); display:none; }
+.cookie-title { font-family:'Sora',sans-serif; font-size:15px; font-weight:700; color:var(--dark-gray); margin-bottom:7px; }
+.cookie-text { font-size:12.5px; color:var(--mid-gray); line-height:1.6; margin-bottom:18px; }
+.cookie-text a { color:var(--teal); }
+.cookie-btns { display:flex; gap:8px; }
+.cookie-btn { flex:1; padding:10px; border-radius:10px; font-size:13.5px; font-weight:600; cursor:pointer; border:none; transition:all 0.2s; }
+.cookie-accept { background:var(--teal); color:#fff; }
+.cookie-decline { background:var(--off-white); color:var(--mid-gray); border:1px solid var(--light-gray); }
+
+/* ─── MODALS ─── */
+.modal-overlay { position:fixed; inset:0; background:rgba(0,0,0,0.45); z-index:2000; display:none; align-items:center; justify-content:center; backdrop-filter:blur(4px); }
+.modal-overlay.open { display:flex; }
+.modal { background:#fff; border-radius:var(--radius-lg); max-width:600px; width:90%; max-height:80vh; overflow-y:auto; padding:44px; position:relative; box-shadow:0 40px 80px rgba(0,0,0,0.18); }
+.modal h2 { font-family:'Sora',sans-serif; font-size:28px; font-weight:900; color:var(--dark-gray); letter-spacing:-1px; margin-bottom:6px; }
+.modal .modal-meta { font-size:12.5px; color:var(--mid-gray); margin-bottom:28px; }
+.modal h3 { font-size:16px; font-weight:700; color:var(--teal); margin:22px 0 7px; }
+.modal p { font-size:14.5px; color:var(--mid-gray); line-height:1.75; margin-bottom:10px; }
+.modal-close { position:absolute; top:18px; right:18px; background:var(--off-white); border:none; width:34px; height:34px; border-radius:50%; cursor:pointer; font-size:18px; color:var(--mid-gray); display:flex; align-items:center; justify-content:center; transition:all 0.2s; }
+.modal-close:hover { background:var(--light-gray); }
+
+/* ─── REVEAL ─── */
+.reveal { opacity:0; transform:translateY(20px); transition:all 0.65s cubic-bezier(0.16,1,0.3,1); }
+.reveal.visible { opacity:1; transform:translateY(0); }
+
+/* ─── MPPT SECTION ─── */
+.mppt-section { background:var(--off-white); border-radius:var(--radius-lg); padding:44px 40px; margin-top:36px; border:1px solid var(--light-gray); }
+.mppt-grid { display:grid; grid-template-columns:1fr 1fr; gap:56px; align-items:center; }
+.mppt-table { width:100%; border-collapse:collapse; font-size:13px; }
+.mppt-table thead th { font-size:10.5px; font-weight:800; color:var(--teal); letter-spacing:1px; text-transform:uppercase; padding:0 0 10px; text-align:left; }
+.mppt-table thead th:not(:first-child) { text-align:center; }
+.mppt-table tbody tr { border-top:1px solid var(--light-gray); }
+.mppt-table tbody td { padding:9px 0; color:var(--dark-gray); font-weight:500; }
+.mppt-table tbody td:first-child { color:var(--mid-gray); }
+.mppt-table tbody td:not(:first-child) { text-align:center; font-weight:700; }
+
+/* ══════════════════════════════════════════
+   MODERN LIGHT TECHY THEME ENHANCEMENT
+══════════════════════════════════════════ */
+
+/* ─── GLOBAL TECH TEXTURE ─── */
+body::before {
+  content:'';
+  position:fixed; inset:0; z-index:0; pointer-events:none;
+  background-image: radial-gradient(circle, rgba(0,168,120,0.045) 1px, transparent 1px);
+  background-size: 32px 32px;
+  mask-image: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.4) 10%, rgba(0,0,0,0.4) 90%, transparent 100%);
+}
+
+/* ─── HERO UPGRADES ─── */
+#hero {
+  background: linear-gradient(150deg, #f0fdf8 0%, #ffffff 35%, #f5f9ff 70%, #fafffe 100%);
+}
+#hero::before {
+  background: radial-gradient(ellipse at 70% 40%, rgba(0,168,120,0.18), transparent 60%);
+  animation: blob-drift 12s ease-in-out infinite alternate;
+}
+#hero::after {
+  background: radial-gradient(ellipse at 30% 60%, rgba(0,102,204,0.1), transparent 55%);
+  animation: blob-drift2 15s ease-in-out infinite alternate;
+}
+@keyframes blob-drift { 0%{transform:translate(0,0) scale(1)} 100%{transform:translate(40px,-30px) scale(1.1)} }
+@keyframes blob-drift2 { 0%{transform:translate(0,0) scale(1)} 100%{transform:translate(-30px,40px) scale(1.15)} }
+
+/* Hero canvas */
+#hero-canvas { position:absolute; inset:0; pointer-events:none; z-index:0; opacity:0.6; }
+
+/* Hero text entrance */
+.hero-left { animation: hero-entry 0.9s cubic-bezier(0.16,1,0.3,1) both; }
+.hero-right { animation: hero-entry 0.9s cubic-bezier(0.16,1,0.3,1) 0.18s both; }
+@keyframes hero-entry { from{opacity:0;transform:translateY(28px)} to{opacity:1;transform:translateY(0)} }
+
+/* Eyebrow glow */
+.hero-eyebrow {
+  box-shadow: 0 0 24px rgba(0,168,120,0.15);
+  animation: eyebrow-pulse 3s ease-in-out infinite;
+}
+@keyframes eyebrow-pulse { 0%,100%{box-shadow:0 0 18px rgba(0,168,120,0.12)} 50%{box-shadow:0 0 32px rgba(0,168,120,0.28)} }
+
+/* Hero gradient text shimmer */
+.hero-title .grad {
+  background: linear-gradient(120deg, #00A878 0%, #00d4a0 40%, #0099ff 70%, #00A878 100%);
+  background-size: 200% auto;
+  -webkit-background-clip: text; -webkit-text-fill-color:transparent; background-clip:text;
+  animation: shimmer 4s linear infinite;
+}
+@keyframes shimmer { to{background-position:200% center} }
+
+/* Stat numbers glow */
+.h-stat-num {
+  text-shadow: 0 0 20px rgba(0,168,120,0.08);
+  transition: text-shadow 0.3s;
+}
+.h-stat:hover .h-stat-num { text-shadow: 0 0 28px rgba(0,168,120,0.25); }
+
+/* ─── BATTERY VIZ ENHANCED ─── */
+.battery-viz {
+  background: rgba(255,255,255,0.82);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(0,168,120,0.12);
+  box-shadow: 0 24px 64px rgba(0,0,0,0.08), 0 0 0 1px rgba(0,168,120,0.06), inset 0 1px 0 rgba(255,255,255,0.9);
+  animation: float-card 6s ease-in-out infinite;
+}
+@keyframes float-card { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-8px)} }
+
+.bv-live { animation: live-pulse 2s ease-in-out infinite; }
+@keyframes live-pulse { 0%,100%{box-shadow:0 0 0 0 rgba(0,168,120,0.3)} 50%{box-shadow:0 0 0 5px rgba(0,168,120,0)} }
+
+/* Bars animated entry */
+.bv-bar.active { animation: bar-grow 0.6s cubic-bezier(0.16,1,0.3,1) both; }
+.bv-bar.active:nth-child(1){animation-delay:0.1s} .bv-bar.active:nth-child(2){animation-delay:0.15s}
+.bv-bar.active:nth-child(3){animation-delay:0.2s} .bv-bar.active:nth-child(4){animation-delay:0.25s}
+.bv-bar.active:nth-child(5){animation-delay:0.3s} .bv-bar.active:nth-child(6){animation-delay:0.35s}
+.bv-bar.active:nth-child(7){animation-delay:0.4s} .bv-bar.active:nth-child(8){animation-delay:0.45s}
+@keyframes bar-grow { from{transform:scaleY(0);transform-origin:bottom} to{transform:scaleY(1);transform-origin:bottom} }
+
+/* Metric chips glassmorphism */
+.bv-metric {
+  background: rgba(247,248,250,0.8);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(0,168,120,0.08);
+  transition: all 0.3s;
+}
+.bv-metric:hover { background: rgba(0,168,120,0.06); transform:translateY(-2px); box-shadow:0 6px 20px rgba(0,168,120,0.1); }
+
+/* ─── NAV TECHY ─── */
+nav {
+  background: rgba(255,255,255,0.88);
+  border-bottom: 1px solid rgba(0,168,120,0.08);
+}
+nav::after {
+  content:'';
+  position:absolute; bottom:0; left:0; right:0; height:1px;
+  background: linear-gradient(90deg, transparent, rgba(0,168,120,0.4), rgba(0,153,255,0.4), transparent);
+  background-size: 200% 1px;
+  animation: nav-line 4s linear infinite;
+}
+@keyframes nav-line { 0%{background-position:100% 0} 100%{background-position:-100% 0} }
+
+.nav-logo-mark {
+  background: linear-gradient(135deg, #00A878, #00d4a0);
+  box-shadow: 0 2px 12px rgba(0,168,120,0.35);
+  animation: logo-pulse 3s ease-in-out infinite;
+}
+@keyframes logo-pulse { 0%,100%{box-shadow:0 2px 12px rgba(0,168,120,0.3)} 50%{box-shadow:0 4px 20px rgba(0,168,120,0.55)} }
+
+/* ─── SECTION EYEBROWS ─── */
+.section-eyebrow {
+  position: relative; display:inline-block;
+}
+.section-eyebrow::after {
+  content:'';
+  position:absolute; bottom:-4px; left:0; right:0; height:1px;
+  background: linear-gradient(90deg, var(--teal), transparent);
+  transform: scaleX(0.6); transform-origin:left;
+  transition: transform 0.4s;
+}
+
+/* ─── OVERVIEW CARDS ─── */
+.ov-card { position:relative; overflow:hidden; }
+.ov-card::before {
+  content:'';
+  position:absolute; inset:0;
+  background: linear-gradient(135deg, transparent 60%, rgba(0,168,120,0.06));
+  opacity:0; transition:opacity 0.3s;
+}
+.ov-card:hover::before { opacity:1; }
+
+/* ─── DIV CARDS TECHY BORDER ─── */
+.div-card {
+  position:relative; overflow:hidden;
+  transition: all 0.35s cubic-bezier(0.16,1,0.3,1);
+}
+.div-card::before {
+  content:'';
+  position:absolute; inset:0; border-radius:inherit;
+  background: linear-gradient(135deg, rgba(0,168,120,0.12), rgba(0,153,255,0.06), transparent);
+  opacity:0; transition:opacity 0.35s; pointer-events:none;
+}
+.div-card:hover::before { opacity:1; }
+.div-card:hover { box-shadow: 0 24px 60px rgba(0,0,0,0.1), 0 0 0 1px rgba(0,168,120,0.15); }
+
+/* Featured div card glowing border */
+.div-card.featured {
+  background: linear-gradient(135deg, #111827, #1a2e24, #111827);
+  box-shadow: 0 20px 60px rgba(0,0,0,0.15), inset 0 1px 0 rgba(0,168,120,0.15);
+}
+
+/* ─── PRODUCT CARDS GLASSMORPHISM ─── */
+.prod-card {
+  background: rgba(247,248,250,0.85);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(232,234,237,0.8);
+  transition: all 0.35s cubic-bezier(0.16,1,0.3,1);
+}
+.prod-card:hover {
+  transform: translateY(-6px) scale(1.01);
+  box-shadow: 0 28px 60px rgba(0,0,0,0.1), 0 0 0 1px rgba(0,168,120,0.15);
+  border-color: rgba(0,168,120,0.2);
+}
+
+/* ─── PILLAR CARDS ─── */
+.pillar-card {
+  transition: all 0.35s cubic-bezier(0.16,1,0.3,1);
+  position:relative; overflow:hidden;
+}
+.pillar-card::after {
+  content:'';
+  position:absolute; bottom:0; left:0; right:0; height:2px;
+  background: linear-gradient(90deg, var(--teal), #0099ff);
+  transform:scaleX(0); transform-origin:left;
+  transition:transform 0.4s cubic-bezier(0.16,1,0.3,1);
+}
+.pillar-card:hover::after { transform:scaleX(1); }
+.pillar-card:hover { box-shadow: 0 12px 36px rgba(0,168,120,0.1); }
+
+/* ─── CUSTOMER CARDS ─── */
+.cust-card {
+  transition: all 0.3s cubic-bezier(0.16,1,0.3,1);
+  position:relative;
+}
+.cust-card::before {
+  content:'';
+  position:absolute; top:0; left:0; right:0; height:2px;
+  background: linear-gradient(90deg, var(--teal), #0099ff);
+  transform:scaleX(0); transform-origin:left;
+  transition:transform 0.4s;
+  border-radius:2px 2px 0 0;
+}
+.cust-card:hover::before { transform:scaleX(1); }
+
+/* ─── MILESTONE DOTS — handled by .m-spine-dot animation above ─── */
+
+/* ─── FAQ ITEMS ─── */
+.faq-item { transition: all 0.25s; }
+.faq-item.open { box-shadow: 0 4px 24px rgba(0,168,120,0.08); }
+.faq-q:hover { background: rgba(0,168,120,0.02); }
+
+/* ─── CONTACT FORM ─── */
+.contact-form {
+  background: rgba(247,248,250,0.7);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(0,168,120,0.1);
+  box-shadow: 0 8px 40px rgba(0,0,0,0.05);
+}
+.form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+  border-color: var(--teal);
+  box-shadow: 0 0 0 3px rgba(0,168,120,0.12), 0 2px 8px rgba(0,168,120,0.08);
+}
+
+/* ─── BUTTONS ENHANCED ─── */
+.btn-fill {
+  background: linear-gradient(135deg, #111827, #1f2937);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+  position:relative; overflow:hidden;
+}
+.btn-fill::after {
+  content:'';
+  position:absolute; inset:0;
+  background: linear-gradient(135deg, rgba(255,255,255,0.08), transparent);
+  opacity:0; transition:opacity 0.3s;
+}
+.btn-fill:hover::after { opacity:1; }
+.btn-fill:hover { box-shadow: 0 12px 32px rgba(0,0,0,0.25); }
+
+.btn-outline {
+  position:relative; overflow:hidden;
+  box-shadow: 0 0 0 2px var(--teal), inset 0 0 0 0 var(--teal);
+}
+
+/* ─── TICKER ENHANCED ─── */
+.ticker-wrap {
+  background: linear-gradient(90deg, #0d1117, #111827, #0d1117);
+  border-top: 1px solid rgba(0,168,120,0.15);
+  border-bottom: 1px solid rgba(0,168,120,0.15);
+}
+
+/* ─── BACK TO TOP ─── */
+#back-to-top {
+  background: linear-gradient(135deg, #111827, #1f2937);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+}
+#back-to-top:hover { background: var(--teal); box-shadow: 0 6px 20px rgba(0,168,120,0.4); }
+
+/* ─── SCROLL INDICATOR ─── */
+.scroll-indicator {
+  position:absolute; bottom:36px; left:50%; transform:translateX(-50%);
+  display:flex; flex-direction:column; align-items:center; gap:6px; z-index:2;
+  animation: hero-entry 1.2s cubic-bezier(0.16,1,0.3,1) 0.6s both;
+}
+.scroll-line { width:1.5px; height:40px; background:linear-gradient(to bottom, rgba(0,168,120,0.6), transparent); animation:scroll-anim 2s ease-in-out infinite; }
+@keyframes scroll-anim { 0%{opacity:0;transform:scaleY(0);transform-origin:top} 50%{opacity:1} 100%{opacity:0;transform:scaleY(1);transform-origin:top} }
+.scroll-label { font-size:10px; font-weight:700; color:var(--teal); letter-spacing:1.5px; text-transform:uppercase; opacity:0.6; }
+
+/* ─── TECH CORNER ACCENTS ─── */
+.battery-viz::after {
+  content:'';
+  position:absolute; top:0; right:0; width:60px; height:60px;
+  border-top:2px solid rgba(0,168,120,0.3);
+  border-right:2px solid rgba(0,168,120,0.3);
+  border-radius:0 var(--radius-lg) 0 0;
+  pointer-events:none;
+}
+
+/* ─── OVERVIEW BAND ENHANCED ─── */
+#overview {
+  background: linear-gradient(135deg, #0d1117 0%, #111827 50%, #0d1a12 100%);
+  position:relative; overflow:hidden;
+}
+#overview::before {
+  content:'';
+  position:absolute; inset:0;
+  background-image: radial-gradient(circle, rgba(0,168,120,0.08) 1px, transparent 1px);
+  background-size:28px 28px;
+  pointer-events:none;
+}
+#overview::after {
+  content:'';
+  position:absolute; top:50%; left:50%; transform:translate(-50%,-50%);
+  width:600px; height:600px;
+  background: radial-gradient(ellipse, rgba(0,168,120,0.07), transparent 70%);
+  pointer-events:none;
+}
+
+/* ─── CHIP ANIMATIONS ─── */
+.chip { transition:all 0.2s; cursor:default; }
+.chip:hover { background:rgba(0,168,120,0.15); transform:translateY(-1px); }
+
+/* ─── FORM SUBMIT GLOW ─── */
+.form-submit {
+  background: linear-gradient(135deg, var(--teal), var(--teal-dark));
+  box-shadow: 0 4px 20px rgba(0,168,120,0.25);
+  transition: all 0.25s;
+  position:relative; overflow:hidden;
+}
+.form-submit::after {
+  content:'';
+  position:absolute; inset:0;
+  background: linear-gradient(135deg, rgba(255,255,255,0.1), transparent);
+  opacity:0; transition:opacity 0.3s;
+}
+.form-submit:hover::after { opacity:1; }
+.form-submit:hover { box-shadow: 0 8px 32px rgba(0,168,120,0.45); transform:translateY(-2px); }
+
+/* ─── REVEAL ENHANCED ─── */
+.reveal { opacity:0; transform:translateY(24px); transition:all 0.7s cubic-bezier(0.16,1,0.3,1); }
+.reveal.visible { opacity:1; transform:translateY(0); }
+
+/* ─── GLOWING SECTION DIVIDERS ─── */
+section { position:relative; }
+
+/* ─── CUSTOM SCROLLBAR ─── */
+::-webkit-scrollbar { width:4px; }
+::-webkit-scrollbar-track { background:transparent; }
+::-webkit-scrollbar-thumb { background:linear-gradient(var(--teal), #0099ff); border-radius:4px; }
+
+/* ─── BESS RACK ANIMATION ─── */
+.bess-rack-unit { animation: rack-glow 3s ease-in-out infinite; }
+.bess-rack-unit:nth-child(odd) { animation-delay:0.5s; }
+.bess-rack-unit:nth-child(3n) { animation-delay:1s; }
+@keyframes rack-glow {
+  0%,100%{border-color:rgba(0,200,150,0.35);box-shadow:none}
+  50%{border-color:rgba(0,200,150,0.6);box-shadow:0 0 8px rgba(0,200,150,0.2)}
+}
+
+/* ─── INVERTER CARD ENHANCED ─── */
+.inv-card { transition:all 0.3s cubic-bezier(0.16,1,0.3,1); }
+.inv-card:hover { transform:translateY(-5px); box-shadow:0 20px 48px rgba(0,0,0,0.1); }
+
+/* ─── NAV CTA PULSE ─── */
+.nav-cta { box-shadow:0 2px 12px rgba(0,168,120,0.2); }
+.nav-cta:hover { box-shadow:0 8px 28px rgba(0,168,120,0.4); }
+
+/* ─── Hero canvas clean ── */
+#hero-canvas { z-index:0; }
+
+/* Hide HUD on small screens */
+@media(max-width:900px) {
+
+  nav { padding:0 20px; }
+  .nav-links { display:none; }
+  section { padding:72px 20px; }
+  .hero-inner { grid-template-columns:1fr; text-align:center; }
+  .hero-left .hero-eyebrow { margin:0 auto 24px; }
+  .hero-sub { margin:0 auto 32px; }
+  .hero-actions { justify-content:center; }
+  .hero-stats { justify-content:center; }
+  .hero-right { display:none; }
+  .about-grid, .contact-grid, .divisions-grid, .streetlight-grid, .ev-grid, .featured-product, .mppt-grid { grid-template-columns:1fr; }
+  .team-grid, .fac-grid, .inverter-showcase { grid-template-columns:1fr; }
+  .ov-grid { grid-template-columns:1fr 1fr; }
+  .footer-top { grid-template-columns:1fr 1fr; gap:28px; }
+  .form-row { grid-template-columns:1fr; }
+  .chat-panel { left:16px; right:16px; width:auto; }
+  #chat-btn { left:20px; bottom:20px; }
+  #back-to-top { right:20px; bottom:20px; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="navbar">
+  <a class="nav-logo" href="#">
+    <div class="nav-logo-mark">T</div>
+    <span class="nav-logo-text">Theju Analytics</span>
+  </a>
+  <div class="nav-links">
+    <a href="#about">About</a>
+    <a href="#divisions">Divisions</a>
+    <a href="#products">Products</a>
+    <a href="#milestones">Journey</a>
+    <a href="#leadership">Team</a>
+    <a href="#customers">Customers</a>
+    <a href="#faq">FAQ</a>
+  </div>
+  <a href="#contact" class="nav-cta">Contact Us</a>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <canvas id="hero-canvas"></canvas>
+  <div class="hero-inner container">
+    <div class="hero-left">
+      <div class="hero-eyebrow"><span class="hero-eyebrow-dot"></span>Make in India · Est. July 2023 · Hyderabad</div>
+      <h1 class="hero-title">
+        Power.<br>
+        <span class="grad">Intelligence.</span><br>
+        Impact.
+      </h1>
+      <p class="hero-sub">
+        <strong>Theju Analytics Pvt. Ltd.</strong> engineers advanced energy storage, defence-grade power systems, smart IoT and AgriTech solutions — built in India, built for the world.
+      </p>
+      <div class="hero-actions">
+        <a href="#divisions" class="btn-fill">Explore Divisions</a>
+        <a href="#contact" class="btn-outline">Get in Touch</a>
+      </div>
+      <div class="hero-stats">
+        <div class="h-stat">
+          <div class="h-stat-num">1000<span class="h-stat-unit">+</span></div>
+          <div class="h-stat-label">Units Delivered</div>
+        </div>
+        <div class="h-stat-div"></div>
+        <div class="h-stat">
+          <div class="h-stat-num">1.5<span class="h-stat-unit"> MWh</span></div>
+          <div class="h-stat-label">Monthly Capacity</div>
+        </div>
+        <div class="h-stat-div"></div>
+        <div class="h-stat">
+          <div class="h-stat-num">25K<span class="h-stat-unit"> sqft</span></div>
+          <div class="h-stat-label">Production Facility</div>
+        </div>
+        <div class="h-stat-div"></div>
+        <div class="h-stat">
+          <div class="h-stat-num">5<span class="h-stat-unit">+</span></div>
+          <div class="h-stat-label">Sectors Served</div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- HERO BATTERY VISUAL -->
+    <div class="hero-right">
+      <div class="battery-viz">
+        <div class="bv-header">
+          <span class="bv-label">TAPL BESS Monitor</span>
+          <span class="bv-live"><span class="bv-live-dot"></span>Live</span>
+        </div>
+
+        <!-- Animated SVG battery -->
+        <div class="bv-battery-wrap">
+          <svg class="svg-battery" viewBox="0 0 280 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <!-- Battery body -->
+            <rect x="8" y="16" width="240" height="88" rx="14" fill="#f7f8fa" stroke="#e8eaed" stroke-width="2"/>
+            <!-- Battery cap -->
+            <rect x="250" y="38" width="22" height="44" rx="8" fill="#e8eaed"/>
+            <!-- Fill level (animated) -->
+            <rect x="16" y="24" width="0" height="72" rx="10" fill="url(#battGrad)" id="batt-fill">
+              <animate attributeName="width" from="0" to="182" dur="2s" fill="freeze" calcMode="spline" keySplines="0.16 1 0.3 1"/>
+            </rect>
+            <!-- Cell dividers -->
+            <line x1="60" y1="24" x2="60" y2="96" stroke="rgba(255,255,255,0.5)" stroke-width="1.5"/>
+            <line x1="108" y1="24" x2="108" y2="96" stroke="rgba(255,255,255,0.5)" stroke-width="1.5"/>
+            <line x1="156" y1="24" x2="156" y2="96" stroke="rgba(255,255,255,0.5)" stroke-width="1.5"/>
+            <!-- Lightning bolt icon -->
+            <path d="M148 48 L138 66 H145 L135 88 L158 62 H150 L160 48 Z" fill="white" opacity="0.9"/>
+            <!-- Percentage text -->
+            <text x="36" y="64" font-family="'Sora',sans-serif" font-size="20" font-weight="900" fill="white" opacity="0.95">76%</text>
+            <!-- Gradient def -->
+            <defs>
+              <linearGradient id="battGrad" x1="0" y1="0" x2="1" y2="0">
+                <stop offset="0%" stop-color="#007a58"/>
+                <stop offset="100%" stop-color="#00d4a0"/>
+              </linearGradient>
+            </defs>
+          </svg>
+        </div>
+
+        <!-- Charge level bars -->
+        <div class="bv-bars" id="bv-bars">
+          <div class="bv-bar active high"></div>
+          <div class="bv-bar active high"></div>
+          <div class="bv-bar active high"></div>
+          <div class="bv-bar active high"></div>
+          <div class="bv-bar active high"></div>
+          <div class="bv-bar active high"></div>
+          <div class="bv-bar active high"></div>
+          <div class="bv-bar active"></div>
+          <div class="bv-bar"></div>
+          <div class="bv-bar"></div>
+        </div>
+
+        <!-- Metrics -->
+        <div class="bv-metrics">
+          <div class="bv-metric green">
+            <div class="bv-metric-val">614V</div>
+            <div class="bv-metric-key">System Voltage</div>
+          </div>
+          <div class="bv-metric">
+            <div class="bv-metric-val">2300Ah</div>
+            <div class="bv-metric-key">Capacity</div>
+          </div>
+          <div class="bv-metric blue">
+            <div class="bv-metric-val">LFP</div>
+            <div class="bv-metric-key">Chemistry</div>
+          </div>
+        </div>
+
+        <!-- Waveform -->
+        <div class="bv-wave">
+          <div class="bv-wave-label">Output Waveform — Pure Sine</div>
+          <svg class="wave-svg" viewBox="0 0 340 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="waveGrad" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#00A878" stop-opacity="0.2"/>
+                <stop offset="100%" stop-color="#00A878" stop-opacity="0"/>
+              </linearGradient>
+            </defs>
+            <!-- Grid lines -->
+            <line x1="0" y1="24" x2="340" y2="24" stroke="#e8eaed" stroke-width="1"/>
+            <!-- Sine wave path fill -->
+            <path d="M0 24 C14 24 20 4 34 4 C48 4 54 44 68 44 C82 44 88 4 102 4 C116 4 122 44 136 44 C150 44 156 4 170 4 C184 4 190 44 204 44 C218 44 224 4 238 4 C252 4 258 44 272 44 C286 44 292 4 306 4 C320 4 326 44 340 44 L340 48 L0 48 Z" fill="url(#waveGrad)"/>
+            <!-- Sine wave line -->
+            <path d="M0 24 C14 24 20 4 34 4 C48 4 54 44 68 44 C82 44 88 4 102 4 C116 4 122 44 136 44 C150 44 156 4 170 4 C184 4 190 44 204 44 C218 44 224 4 238 4 C252 4 258 44 272 44 C286 44 292 4 306 4 C320 4 326 44 340 44" stroke="#00A878" stroke-width="2.5" fill="none" stroke-linecap="round">
+              <animate attributeName="stroke-dashoffset" from="1000" to="0" dur="3s" fill="freeze"/>
+            </path>
+            <!-- Moving dot on wave -->
+            <circle r="4" fill="#00A878">
+              <animateMotion dur="2.28s" repeatCount="indefinite">
+                <mpath href="#wave-path-ref"/>
+              </animateMotion>
+            </circle>
+            <path id="wave-path-ref" d="M0 24 C14 24 20 4 34 4 C48 4 54 44 68 44 C82 44 88 4 102 4 C116 4 122 44 136 44 C150 44 156 4 170 4 C184 4 190 44 204 44 C218 44 224 4 238 4 C252 4 258 44 272 44 C286 44 292 4 306 4 C320 4 326 44 340 44" fill="none" stroke="none"/>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="scroll-indicator">
+    <div class="scroll-label">Scroll</div>
+    <div class="scroll-line"></div>
+  </div>
+</section>
+
+<!-- TICKER -->
+<div class="ticker-wrap">
+  <div class="ticker">
+    <span class="hi">BESS 1–5 MWh</span><span>Li-Ion Battery Packs</span><span class="hi">Smart BMS 5S–256S</span><span>Solar Hybrid Inverters</span><span class="hi">BLDC Motor Controllers</span><span>MEGIoT Controller</span><span class="hi">TASoil+ AgriTech</span><span>CUBEX Portable Power</span><span class="hi">EV Charging Solutions</span><span>AIO Solar Street Light</span><span class="hi">Defence Power Systems</span><span>AquaViz Analytics</span>
+    <!-- repeat -->
+    <span class="hi">BESS 1–5 MWh</span><span>Li-Ion Battery Packs</span><span class="hi">Smart BMS 5S–256S</span><span>Solar Hybrid Inverters</span><span class="hi">BLDC Motor Controllers</span><span>MEGIoT Controller</span><span class="hi">TASoil+ AgriTech</span><span>CUBEX Portable Power</span><span class="hi">EV Charging Solutions</span><span>AIO Solar Street Light</span><span class="hi">Defence Power Systems</span><span>AquaViz Analytics</span>
+  </div>
+</div>
+
+<!-- OVERVIEW -->
+<section id="overview">
+  <div class="ov-inner container reveal">
+    <div class="section-eyebrow">Company Overview</div>
+    <h2 class="section-title" style="color:#fff;">IoT & Smart Solutions<br><span style="color:var(--teal-light);">Center of Excellence</span></h2>
+    <p class="section-sub" style="color:rgba(255,255,255,0.5);">Where defence precision meets renewable energy, battery intelligence, and agricultural innovation — unified by smart IoT at the core.</p>
+    <div class="ov-grid">
+      <div class="ov-card"><div class="ov-icon">🛡️</div><div class="ov-title">Defence & EV Solutions</div><div class="ov-desc">Mission-critical battery systems, BLDC controllers, ruggedized power electronics</div></div>
+      <div class="ov-card"><div class="ov-icon">☀️</div><div class="ov-title">Solar Energy & Storage</div><div class="ov-desc">Containerized BESS, hybrid solar inverters, MPPT controllers and off-grid integration</div></div>
+      <div class="ov-card"><div class="ov-icon">🔋</div><div class="ov-title">Battery & Power Products</div><div class="ov-desc">Custom Li-Ion packs, Power Wall, CUBEX portable stations and advanced BMS</div></div>
+      <div class="ov-card"><div class="ov-icon">🌾</div><div class="ov-title">Agri & Rural Electrification</div><div class="ov-desc">TASoil+ smart sensors, precision irrigation and IoT-enabled rural energy</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="container">
+    <div class="about-grid">
+      <div class="about-left reveal">
+        <div class="section-eyebrow">Founding Story</div>
+        <h2 class="section-title" style="text-align:left;">Born from a<br><span>Bold Vision</span></h2>
+        <p><strong>Theju Analytics Pvt. Ltd. (TAPL)</strong> was incorporated in July 2023, built on the conviction that India can lead the global energy transition with indigenous technology, rigorous engineering, and relentless innovation.</p>
+        <div class="about-quote">
+          <blockquote>"TAPL was born out of a vision to create technology that empowers — technology that's built in India, for the world."</blockquote>
+          <cite>— Mr. RamaKrishna, Founder & Managing Director</cite>
+        </div>
+        <p>Our strategy is anchored in three pillars: <strong>Innovation</strong>, <strong>Integration</strong>, and <strong>Impact</strong>. We engineer systems that don't just power devices — they empower people.</p>
+        <div class="values-chips">
+          <span class="chip">Integrity</span><span class="chip">Innovation</span><span class="chip">Sustainability</span><span class="chip">Quality</span><span class="chip">Customer Focus</span><span class="chip">Continuous Learning</span>
+        </div>
+      </div>
+      <div class="about-right reveal">
+        <div class="pillar-card"><div class="pillar-icon">⚡</div><div class="pillar-name">Energy Systems</div><div class="pillar-desc">Solar BESS, hybrid inverters, and advanced power conversion for sustainable energy at scale</div></div>
+        <div class="pillar-card"><div class="pillar-icon">🛡️</div><div class="pillar-name">Defence Grade</div><div class="pillar-desc">Mission-critical power systems for extreme environments — ruggedized, reliable, uncompromising</div></div>
+        <div class="pillar-card"><div class="pillar-icon">🔋</div><div class="pillar-name">Battery Intelligence</div><div class="pillar-desc">Smart BMS, custom Li-Ion packs, and energy management across LFP and NMC chemistries</div></div>
+        <div class="pillar-card"><div class="pillar-icon">📡</div><div class="pillar-name">IoT & Analytics</div><div class="pillar-desc">MegaVista, MEGIoT, AquaViz — cloud-connected intelligence for real-time energy insights</div></div>
+        <div class="pillar-card" style="grid-column:span 2;"><div class="pillar-icon">🌾</div><div class="pillar-name">AgriTech</div><div class="pillar-desc">TASoil+ precision soil sensing, solar-powered rural electrification, and Industry 4.0 for agriculture</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DIVISIONS -->
+<section id="divisions">
+  <div class="container reveal">
+    <div class="section-eyebrow">Our Divisions</div>
+    <h2 class="section-title">Four Pillars of <span>Innovation</span></h2>
+    <p class="section-sub">Each division is a focused center of excellence, united by intelligent, reliable, indigenous technology.</p>
+    <div class="divisions-grid">
+      <div class="div-card featured">
+        <div class="div-number">01</div>
+        <div class="div-chip">Division 01</div>
+        <span class="div-icon">⚡</span>
+        <div class="div-title">Energy Products</div>
+        <div class="div-desc">Containerized BESS, solar hybrid inverters, off-grid solar systems, MPPT charge controllers, and Power Wall solutions for industrial, commercial, and renewable energy markets.</div>
+        <div class="div-tags"><span class="div-tag">BESS 1–5 MWh</span><span class="div-tag">Solar Inverters 1–3 kVA</span><span class="div-tag">MPPT Controllers</span><span class="div-tag">Power Wall</span></div>
+      </div>
+      <div class="div-card">
+        <div class="div-number">02</div>
+        <div class="div-chip">Division 02</div>
+        <span class="div-icon">🛡️</span>
+        <div class="div-title">Defence Products</div>
+        <div class="div-desc">High-reliability battery packs for HAA environments, torpedo BLDC motor controllers, AFV power systems, and ruggedized BMS for mission-critical defence applications.</div>
+        <div class="div-tags"><span class="div-tag">HAA Li-Ion Batteries</span><span class="div-tag">Torpedo Controllers</span><span class="div-tag">AFV Power</span><span class="div-tag">28.8V LRT Systems</span></div>
+      </div>
+      <div class="div-card">
+        <div class="div-number">03</div>
+        <div class="div-chip">Division 03</div>
+        <span class="div-icon">🌾</span>
+        <div class="div-title">AgriTech</div>
+        <div class="div-desc">TASoil+ research-grade soil moisture and temperature sensors, precision irrigation systems, solar-powered agri automation, and IoT-enabled field intelligence.</div>
+        <div class="div-tags"><span class="div-tag">TASoil+ Sensor</span><span class="div-tag">Moisture Analytics</span><span class="div-tag">Solar Agri Power</span><span class="div-tag">Field IoT</span></div>
+      </div>
+      <div class="div-card">
+        <div class="div-number">04</div>
+        <div class="div-chip">Division 04</div>
+        <span class="div-icon">📡</span>
+        <div class="div-title">IoT & Smart Control</div>
+        <div class="div-desc">MEGIoT Smart Controllers, MegaVista 1.0 AWG platforms, AquaViz energy analytics dashboards, CUBEX portable power stations, and EV charging management.</div>
+        <div class="div-tags"><span class="div-tag">MegaVista 1.0</span><span class="div-tag">MEGIoT Controller</span><span class="div-tag">AquaViz Dashboard</span><span class="div-tag">CUBEX</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRODUCTS -->
+<section id="products">
+  <div class="container-wide">
+    <div class="reveal">
+      <div class="section-eyebrow">Product Portfolio</div>
+      <h2 class="section-title">Engineering <span>Excellence</span></h2>
+      <p class="section-sub">Every product is designed in-house, tested rigorously, and backed by TAPL's full-stack engineering capability.</p>
+    </div>
+
+    <!-- FEATURED BESS -->
+    <div class="featured-product reveal" style="margin-bottom:48px;">
+      <div class="feat-left">
+        <div class="section-eyebrow" style="text-align:left;">TAPOWER+ LI-ION BESS</div>
+        <h2 class="section-title" style="text-align:left;font-size:42px;">Containerized<br><span>BESS</span></h2>
+        <p class="feat-desc">Scalable 1–5 MWh containerized Battery Energy Storage Systems using LFP chemistry. Modular rack architecture, proprietary BMS, smart monitoring. Deployed at Premier Energy, Lucknow — 161 kW BESS.</p>
+        <div class="feat-features">
+          <div class="feat-feat"><div class="feat-check">✓</div><div class="feat-feat-text"><strong>Long Life LFP Chemistry</strong> — 4000+ cycle life, thermally stable</div></div>
+          <div class="feat-feat"><div class="feat-check">✓</div><div class="feat-feat-text"><strong>Smart Monitoring</strong> — Real-time cell voltage, SOC, SOH tracking</div></div>
+          <div class="feat-feat"><div class="feat-check">✓</div><div class="feat-feat-text"><strong>On-Grid & Off-Grid</strong> — Modular integration for any application</div></div>
+          <div class="feat-feat"><div class="feat-check">✓</div><div class="feat-feat-text"><strong>Indigenous Design</strong> — Reduces total cost by 30%+</div></div>
+        </div>
+      </div>
+      <div>
+        <div class="bess-viz">
+          <div class="bess-viz-title">1.5 MWh BESS</div>
+          <div class="bess-viz-sub">Containerized LFP Energy Storage</div>
+          <div class="bess-rack">
+            <div class="bess-rack-unit"><span></span><span></span><span></span></div>
+            <div class="bess-rack-unit"><span></span><span></span><span></span></div>
+            <div class="bess-rack-unit"><span></span><span></span><span></span></div>
+            <div class="bess-rack-unit"><span></span><span></span><span></span></div>
+            <div class="bess-rack-unit"><span></span><span></span><span></span></div>
+            <div class="bess-rack-unit"><span></span><span></span><span></span></div>
+            <div class="bess-rack-unit"><span></span><span></span><span></span></div>
+            <div class="bess-rack-unit"><span></span><span></span><span></span></div>
+            <div class="bess-rack-unit"><span></span><span></span><span></span></div>
+            <div class="bess-rack-unit"><span></span><span></span><span></span></div>
+          </div>
+          <div class="bess-specs">
+            <div class="bess-spec"><div class="bess-spec-val">614.4V</div><div class="bess-spec-key">System Voltage</div></div>
+            <div class="bess-spec"><div class="bess-spec-val">2300Ah</div><div class="bess-spec-key">Total Capacity</div></div>
+            <div class="bess-spec"><div class="bess-spec-val">1.41 MWh</div><div class="bess-spec-key">Energy</div></div>
+            <div class="bess-spec"><div class="bess-spec-val">LFP</div><div class="bess-spec-key">Chemistry</div></div>
+            <div class="bess-spec"><div class="bess-spec-val">10 Racks</div><div class="bess-spec-key">Parallel</div></div>
+            <div class="bess-spec"><div class="bess-spec-val">51.2V</div><div class="bess-spec-key">Rack Voltage</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PRODUCT CAROUSEL -->
+    <div class="reveal">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;padding:0 24px;">
+        <h3 style="font-family:'Sora',sans-serif;font-size:22px;font-weight:800;color:var(--dark-gray);letter-spacing:-0.5px;">All Products <span style="color:var(--teal);">— Scroll to Explore →</span></h3>
+        <div class="carousel-nav">
+          <button class="carousel-btn" id="prev-btn">←</button>
+          <button class="carousel-btn" id="next-btn">→</button>
+        </div>
+      </div>
+    </div>
+    <div class="carousel-wrap">
+      <div class="carousel-track" id="carousel">
+        <!-- Smart BMS -->
+        <div class="prod-card">
+          <div class="prod-visual prod-visual-bess">
+            <div class="pv-glow pv-glow-teal" style="top:-20px;left:-20px;"></div>
+            <div class="pv-icon">🔋</div>
+            <div class="prod-badge-l">5S–256S</div>
+            <div class="prod-badge-r">Indigenous IP</div>
+          </div>
+          <div class="prod-body">
+            <div class="prod-category">Battery Management</div>
+            <div class="prod-name">Smart BMS</div>
+            <div class="prod-desc">In-house BMS with Master-Slave architecture, Modbus RS485, CAN bus, passive balancing. Telecom & defence certified.</div>
+            <div class="prod-specs"><span class="prod-spec">5S to 256S</span><span class="prod-spec">LFP + NMC</span><span class="prod-spec">CAN Bus</span></div>
+          </div>
+        </div>
+        <!-- MEGIoT -->
+        <div class="prod-card">
+          <div class="prod-visual prod-visual-iot">
+            <div class="pv-glow pv-glow-teal" style="bottom:-20px;right:-20px;"></div>
+            <div class="pv-icon">📱</div>
+            <div class="prod-badge-l">MegaVista 1.0</div>
+            <div class="prod-badge-r">Dec 2025</div>
+          </div>
+          <div class="prod-body">
+            <div class="prod-category">IoT Smart Controller</div>
+            <div class="prod-name">MEGIoT / MegaVista</div>
+            <div class="prod-desc">Smart IoT controller for AWG systems. GSM, temp & humidity sensing, dew point control, water generation data, cloud sync.</div>
+            <div class="prod-specs"><span class="prod-spec">GSM</span><span class="prod-spec">IoT Cloud</span><span class="prod-spec">LCD Display</span></div>
+          </div>
+        </div>
+        <!-- BLDC -->
+        <div class="prod-card">
+          <div class="prod-visual prod-visual-bldc">
+            <div class="pv-glow pv-glow-blue" style="bottom:-20px;left:30px;"></div>
+            <div class="pv-icon">⚙️</div>
+            <div class="prod-badge-l">250W–10kW</div>
+          </div>
+          <div class="prod-body">
+            <div class="prod-category">Motion Control</div>
+            <div class="prod-name">BLDC Motor Controllers</div>
+            <div class="prod-desc">High-efficiency BLDC controllers for defence, EV, and appliance applications. Auto-phase detection, anti-theft, software configurable.</div>
+            <div class="prod-specs"><span class="prod-spec">250W–10kW</span><span class="prod-spec">&gt;85% Eff.</span><span class="prod-spec">IP65/67</span></div>
+          </div>
+        </div>
+        <!-- CUBEX -->
+        <div class="prod-card">
+          <div class="prod-visual prod-visual-cube">
+            <div class="pv-glow pv-glow-purple" style="top:-20px;right:-20px;"></div>
+            <div style="text-align:center;">
+              <div class="pv-icon">⚡</div>
+              <div style="font-family:'Sora';font-weight:900;font-size:22px;color:var(--dark-gray);letter-spacing:-1px;">CUBEX</div>
+            </div>
+            <div class="prod-badge-l">2kW System</div>
+            <div class="prod-badge-r">5 Nov 2025</div>
+          </div>
+          <div class="prod-body">
+            <div class="prod-category">Portable Power</div>
+            <div class="prod-name">CUBEX Power Station</div>
+            <div class="prod-desc">India's first portable power generator. 0→100% in 2 hours. Powers 5 devices simultaneously: laptops (12hr), mobiles (24hr), fans (12hr).</div>
+            <div class="prod-specs"><span class="prod-spec">2hr Fast Charge</span><span class="prod-spec">5 Outputs</span><span class="prod-spec">AC + DC</span></div>
+          </div>
+        </div>
+        <!-- TASoil+ -->
+        <div class="prod-card">
+          <div class="prod-visual prod-visual-soil">
+            <div class="pv-glow pv-glow-amber" style="bottom:-20px;left:-20px;"></div>
+            <div class="pv-icon">🌱</div>
+            <div class="prod-badge-l">TA Soil Plus</div>
+            <div class="prod-badge-r">Oct 2025</div>
+          </div>
+          <div class="prod-body">
+            <div class="prod-category">AgriTech Sensor</div>
+            <div class="prod-name">TASoil+ Moisture Sensor</div>
+            <div class="prod-desc">Research-grade buriable soil moisture & temperature sensor. ±2% accuracy, IoT-connected. For horticulture, irrigation, sports turf.</div>
+            <div class="prod-specs"><span class="prod-spec">±2% Accuracy</span><span class="prod-spec">4–20mA</span><span class="prod-spec">8s Response</span></div>
+          </div>
+        </div>
+        <!-- AquaViz -->
+        <div class="prod-card">
+          <div class="prod-visual prod-visual-aqua">
+            <div class="pv-glow pv-glow-blue" style="top:-20px;right:-20px;"></div>
+            <div class="pv-icon">📊</div>
+            <div class="prod-badge-l">AquaViz™</div>
+          </div>
+          <div class="prod-body">
+            <div class="prod-category">Analytics Platform</div>
+            <div class="prod-name">AquaViz Intelligence UI</div>
+            <div class="prod-desc">Real-time cell monitoring, SOC/SOH visualization, fault logs, customizable dashboards. Web, tablet & panel. Made in India.</div>
+            <div class="prod-specs"><span class="prod-spec">Real-Time</span><span class="prod-spec">AWS IoT</span><span class="prod-spec">BLE/RS485</span></div>
+          </div>
+        </div>
+        <!-- Solar Inverters -->
+        <div class="prod-card">
+          <div class="prod-visual prod-visual-inv">
+            <div class="pv-glow pv-glow-blue" style="bottom:-20px;left:20px;"></div>
+            <div class="pv-icon">🔌</div>
+            <div class="prod-badge-l">1–3 kVA</div>
+          </div>
+          <div class="prod-body">
+            <div class="prod-category">Solar Inverters</div>
+            <div class="prod-name">Hybrid Solar Inverter</div>
+            <div class="prod-desc">Pure Sine Wave hybrid inverters with MPPT solar priority, LCD display, 4kV surge protection. UPS & Inverter modes.</div>
+            <div class="prod-specs"><span class="prod-spec">Pure Sine</span><span class="prod-spec">MPPT</span><span class="prod-spec">&gt;85% Eff.</span></div>
+          </div>
+        </div>
+        <!-- MPPT -->
+        <div class="prod-card">
+          <div class="prod-visual prod-visual-mppt">
+            <div class="pv-glow pv-glow-amber" style="top:-10px;right:-10px;"></div>
+            <div class="pv-icon">☀️</div>
+            <div class="prod-badge-l">TMC Series</div>
+          </div>
+          <div class="prod-body">
+            <div class="prod-category">Solar Charge Controller</div>
+            <div class="prod-name">MPPT TMC 5–20A</div>
+            <div class="prod-desc">99% MPPT tracking, 30% more energy than PWM. 12/24V systems, Lead-Acid & Lithium. BLE remote monitoring optional.</div>
+            <div class="prod-specs"><span class="prod-spec">&gt;96% Peak</span><span class="prod-spec">5–20A Range</span><span class="prod-spec">BLE</span></div>
+          </div>
+        </div>
+        <!-- AIO Street Light -->
+        <div class="prod-card">
+          <div class="prod-visual prod-visual-street">
+            <div class="pv-glow pv-glow-amber" style="top:10px;left:30px;"></div>
+            <div class="pv-icon" style="filter:drop-shadow(0 0 12px rgba(251,191,36,0.8));">💡</div>
+            <div class="prod-badge-r">IP65</div>
+          </div>
+          <div class="prod-body">
+            <div class="prod-category">Rural Electrification</div>
+            <div class="prod-name">AIO Solar Street Light</div>
+            <div class="prod-desc">All-in-one: solar panel + LFP battery + MPPT + PIR sensor + LED. 20–60W range. 50,000+ hour lifespan. Coastal deployments.</div>
+            <div class="prod-specs"><span class="prod-spec">20–60W</span><span class="prod-spec">&gt;20hr Backup</span><span class="prod-spec">PIR Sensing</span></div>
+          </div>
+        </div>
+        <!-- EV Charging -->
+        <div class="prod-card">
+          <div class="prod-visual prod-visual-ev">
+            <div class="pv-glow pv-glow-teal" style="bottom:-10px;right:10px;"></div>
+            <div class="pv-icon">🚗</div>
+            <div class="prod-badge-l">TAPL + EON</div>
+            <div class="prod-badge-r">2W/3W/4W</div>
+          </div>
+          <div class="prod-body">
+            <div class="prod-category">EV Charging</div>
+            <div class="prod-name">EV Charging Solutions</div>
+            <div class="prod-desc">AC & DC chargers for all vehicle types. Home & commercial. In-house CMS + mobile app. Full lifecycle support.</div>
+            <div class="prod-specs"><span class="prod-spec">AC + DC</span><span class="prod-spec">CMS App</span><span class="prod-spec">Full Support</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- INVERTERS -->
+    <div class="reveal" style="margin-top:64px;">
+      <div class="section-eyebrow">Solar Hybrid Inverters</div>
+      <h3 style="font-family:'Sora',sans-serif;font-size:30px;font-weight:900;color:var(--dark-gray);letter-spacing:-1px;text-align:center;margin-bottom:8px;">Reliable Power. <span style="color:var(--teal);">Intelligent Performance.</span></h3>
+      <p style="text-align:center;font-size:15px;color:var(--mid-gray);margin-bottom:0;">Hybrid Design · MPPT Solar Priority · Pure Sine Wave · LCD Display · Remote Monitoring</p>
+    </div>
+    <div class="inverter-showcase reveal">
+      <div class="inv-card">
+        <div class="inv-header inv-header-1"><div class="inv-model">1 kVA</div><div class="inv-kva">Model TT1000VA</div></div>
+        <div class="inv-body">
+          <table><tr><td>Capacity</td><td>1000VA / 800W</td></tr><tr><td>Battery</td><td>25.6V DC</td></tr><tr><td>Waveform</td><td>Pure Sine Wave</td></tr><tr><td>Max SPV</td><td>1000Wp</td></tr><tr><td>Max PV Voltage</td><td>100V OC</td></tr><tr><td>MPPT Charge</td><td>20A</td></tr><tr><td>Efficiency</td><td>&gt;85%</td></tr></table>
+          <div class="inv-feats"><span class="inv-feat">UPS Mode</span><span class="inv-feat">Solar Priority</span><span class="inv-feat">LCD</span><span class="inv-feat">Auto Restart</span></div>
+        </div>
+      </div>
+      <div class="inv-card">
+        <div class="inv-header inv-header-2"><div class="inv-model">2 kVA</div><div class="inv-kva">Model IG2000VA</div></div>
+        <div class="inv-body">
+          <table><tr><td>Capacity</td><td>2000VA / 1600W</td></tr><tr><td>Battery</td><td>48V DC</td></tr><tr><td>Waveform</td><td>Pure Sine Wave</td></tr><tr><td>Max SPV</td><td>2000Wp</td></tr><tr><td>Max PV Voltage</td><td>100V OC</td></tr><tr><td>MPPT Charge</td><td>40A</td></tr><tr><td>Efficiency</td><td>&gt;85%</td></tr></table>
+          <div class="inv-feats"><span class="inv-feat">UPS Mode</span><span class="inv-feat">Solar Priority</span><span class="inv-feat">LCD</span><span class="inv-feat">Auto Restart</span></div>
+        </div>
+      </div>
+      <div class="inv-card">
+        <div class="inv-header inv-header-3"><div class="inv-model">3 kVA</div><div class="inv-kva">Model TT3000VA</div></div>
+        <div class="inv-body">
+          <table><tr><td>Capacity</td><td>3000VA / 2400W</td></tr><tr><td>Battery</td><td>48V DC</td></tr><tr><td>Waveform</td><td>Pure Sine Wave</td></tr><tr><td>Max SPV</td><td>3000Wp</td></tr><tr><td>Max PV Voltage</td><td>100V OC</td></tr><tr><td>MPPT Charge</td><td>40A</td></tr><tr><td>Efficiency</td><td>&gt;85%</td></tr></table>
+          <div class="inv-feats"><span class="inv-feat">Galvanic Isolation</span><span class="inv-feat">Wide AVR</span><span class="inv-feat">LCD</span><span class="inv-feat">Heavy-Duty</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MPPT TABLE -->
+    <div class="mppt-section reveal">
+      <div class="mppt-grid">
+        <div>
+          <div class="section-eyebrow" style="text-align:left;">Solar MPPT Charge Controller</div>
+          <h3 style="font-family:'Sora',sans-serif;font-size:28px;font-weight:900;color:var(--dark-gray);letter-spacing:-1px;margin-bottom:14px;">TMC Series <span style="color:var(--teal);">5A to 20A</span></h3>
+          <p style="font-size:15px;color:var(--mid-gray);line-height:1.8;margin-bottom:20px;">99% MPPT tracking efficiency — up to 30% more energy than PWM. Lead-Acid and Lithium compatible. Rural electrification, street lighting, boats, and battery charging.</p>
+          <div style="display:flex;flex-wrap:wrap;gap:7px;">
+            <span class="chip">&gt;96% Peak Efficiency</span><span class="chip">99% MPPT Tracking</span><span class="chip">IP22/IP68</span><span class="chip">BLE Optional</span>
+          </div>
+        </div>
+        <table class="mppt-table">
+          <thead><tr><th>Model</th><th>TMC-05</th><th>TMC-10</th><th>TMC-15</th><th>TMC-20</th></tr></thead>
+          <tbody>
+            <tr><td>Max Current</td><td>5A</td><td>10A</td><td>15A</td><td>20A</td></tr>
+            <tr><td>Max PV @12V</td><td>75W</td><td>150W</td><td>200W</td><td>260W</td></tr>
+            <tr><td>Max PV @24V</td><td>150W</td><td>260W</td><td>380W</td><td>500W</td></tr>
+            <tr><td>Float Voltage</td><td colspan="4" style="text-align:center;font-weight:700;">13.8V / 27.6V</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SOLAR STREET LIGHT -->
+<section id="streetlight">
+  <div class="container reveal">
+    <div class="section-eyebrow">AgriTech & Rural Electrification</div>
+    <h2 class="section-title">AIO Solar <span>Street Light</span></h2>
+    <p class="section-sub">All-in-one integrated design — solar panel, LFP battery, MPPT controller, PIR sensor, and LED in a single compact unit. Deployed at coastal promenades across India.</p>
+    <div class="streetlight-grid">
+      <div class="streetlight-visual">
+        <div class="sl-glow-bg"></div>
+        <div class="sl-pole"><div class="sl-arm"></div><div class="sl-light"><div class="sl-beam"></div></div></div>
+        <div class="sl-chips">
+          <span class="sl-chip">🌐 IP65 Rated</span>
+          <span class="sl-chip">⏱ &gt;20hrs Backup</span>
+          <span class="sl-chip">📡 BLE Monitoring</span>
+          <span class="sl-chip">💡 140+ lm/W</span>
+        </div>
+      </div>
+      <div class="streetlight-content">
+        <p>The <strong>AIO G Series (20–60W)</strong> integrates monocrystalline solar panel, LiFePO4 battery, smart MPPT controller, and PIR motion sensor into a single elegant fitting. Easy install, minimal maintenance.</p>
+        <p>Features SOC-based dimming, PIR 120° motion sensing, programmable brightness, and 50,000+ hour LED lifespan at 140+ lm/W efficacy.</p>
+        <div class="sl-table">
+          <table>
+            <thead><tr><th>Parameter</th><th>20W</th><th>30W</th><th>40W</th><th>50W</th><th>60W</th></tr></thead>
+            <tbody>
+              <tr><td>Battery (Whr)</td><td>154</td><td>230</td><td>260</td><td>320</td><td>410</td></tr>
+              <tr><td>Panel (Wp)</td><td>20</td><td>30</td><td>40</td><td>50</td><td>60</td></tr>
+              <tr><td>Max Charge</td><td colspan="3">5A</td><td colspan="2">8A</td></tr>
+              <tr><td>LED CCT</td><td colspan="5">5700K ± 500K</td></tr>
+              <tr><td>Lifespan</td><td colspan="5">&gt; 50,000 Hours</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EV CHARGING -->
+<section id="ev">
+  <div class="container reveal">
+    <div class="section-eyebrow">TAPL Power + EON</div>
+    <h2 class="section-title">Complete EV <span>Charging Solutions</span></h2>
+    <p class="section-sub">From home to highway — AC and DC chargers for all 2, 3, and 4-wheeler EVs. Full lifecycle support.</p>
+    <div class="ev-grid">
+      <div class="ev-visual">
+        <div class="ev-icon-big">⚡</div>
+        <div class="ev-viz-title">TAPL POWER + EON</div>
+        <div class="ev-viz-sub">Unleash the Future of EV Charging</div>
+        <div class="ev-feats">
+          <div class="ev-feat-chip">🏠 Home Chargers</div>
+          <div class="ev-feat-chip">🏢 Business Chargers</div>
+          <div class="ev-feat-chip">⚡ AC & DC Both</div>
+          <div class="ev-feat-chip">📱 Mobile App CMS</div>
+          <div class="ev-feat-chip">2W / 3W / 4W</div>
+          <div class="ev-feat-chip">🔧 Full Lifecycle</div>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:18px;">
+        <div style="background:var(--white);border-radius:var(--radius);padding:26px;border:1px solid var(--light-gray);">
+          <div style="font-size:22px;margin-bottom:7px;">🔌</div>
+          <div style="font-family:'Sora',sans-serif;font-size:17px;font-weight:800;color:var(--dark-gray);margin-bottom:7px;">Complete EV Charging Infrastructure</div>
+          <div style="font-size:14px;color:var(--mid-gray);line-height:1.7;">Comprehensive AC and DC chargers for homes, businesses, and public installations. Expert design, installation, and operational optimization.</div>
+        </div>
+        <div style="background:var(--white);border-radius:var(--radius);padding:26px;border:1px solid var(--light-gray);">
+          <div style="font-size:22px;margin-bottom:7px;">📊</div>
+          <div style="font-family:'Sora',sans-serif;font-size:17px;font-weight:800;color:var(--dark-gray);margin-bottom:7px;">Charge Management Software (CMS)</div>
+          <div style="font-size:14px;color:var(--mid-gray);line-height:1.7;">In-house CMS + user-friendly Mobile App. Real-time usage insights, seamless payment integration, and charging analytics.</div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;">
+          <div style="background:var(--dark-gray);border-radius:12px;padding:18px;text-align:center;color:#fff;"><div style="font-size:18px;margin-bottom:5px;">📐</div><div style="font-size:12px;font-weight:700;">Design</div></div>
+          <div style="background:var(--teal);border-radius:12px;padding:18px;text-align:center;color:#fff;"><div style="font-size:18px;margin-bottom:5px;">⚙️</div><div style="font-size:12px;font-weight:700;">Install</div></div>
+          <div style="background:var(--teal-bg);border:1.5px solid rgba(0,168,120,0.2);border-radius:12px;padding:18px;text-align:center;"><div style="font-size:18px;margin-bottom:5px;">🔧</div><div style="font-size:12px;font-weight:700;color:var(--teal);">Support</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MILESTONES -->
+<section id="milestones">
+  <div class="container reveal">
+    <div class="section-eyebrow">Key Milestones</div>
+    <h2 class="section-title">The TAPL <span>Journey</span></h2>
+    <p class="section-sub">From garage-level prototype to MWh-scale deployments in just two years.</p>
+    <div class="timeline">
+      <div class="timeline-track">
+        <div class="milestone">
+          <div class="m-dot-wrap"><div class="m-date-badge">July 2023</div></div>
+          <div class="m-spine-dot"></div>
+          <div class="m-content">
+            <div class="m-accent-bar"></div>
+            <div class="m-phase">Phase 01</div>
+            <div class="m-heading">Foundation &amp; Vision</div>
+            <ul class="m-points">
+              <li>Incorporated to develop indigenous energy &amp; defence systems</li>
+              <li>Built embedded R&D, power electronics foundation</li>
+              <li>Mission: high-reliability systems for Defence &amp; Commercial</li>
+            </ul>
+          </div>
+        </div>
+        <div class="milestone">
+          <div class="m-dot-wrap"><div class="m-date-badge">2023–24</div></div>
+          <div class="m-spine-dot"></div>
+          <div class="m-content">
+            <div class="m-accent-bar" style="background:linear-gradient(90deg,#0066cc,#38bdf8)"></div>
+            <div class="m-phase" style="color:#0066cc">Phase 02</div>
+            <div class="m-heading">Core Technology Built</div>
+            <ul class="m-points">
+              <li>Custom power controllers, Smart BMS, embedded modules</li>
+              <li>Prototype defence products &amp; automation systems</li>
+              <li>Strengthened OEM &amp; collaborator partnerships</li>
+            </ul>
+          </div>
+        </div>
+        <div class="milestone">
+          <div class="m-dot-wrap"><div class="m-date-badge">2024–25</div></div>
+          <div class="m-spine-dot"></div>
+          <div class="m-content">
+            <div class="m-accent-bar" style="background:linear-gradient(90deg,#7c3aed,#a78bfa)"></div>
+            <div class="m-phase" style="color:#7c3aed">Phase 03</div>
+            <div class="m-heading">Products &amp; Early Wins</div>
+            <ul class="m-points">
+              <li>1000+ batteries → Adani Solar &amp; Aparrvaa Energy</li>
+              <li>100+ ventilator batteries → HBL Medical Systems</li>
+              <li>161 kW BESS deployed at Premier Energy, Lucknow</li>
+            </ul>
+          </div>
+        </div>
+        <div class="milestone">
+          <div class="m-dot-wrap"><div class="m-date-badge amber-date">2025–26</div></div>
+          <div class="m-spine-dot amber"></div>
+          <div class="m-content">
+            <div class="m-accent-bar" style="background:linear-gradient(90deg,var(--amber),#fbbf24)"></div>
+            <div class="m-phase" style="color:var(--amber)">Phase 04</div>
+            <div class="m-heading">Scaling to MW &amp; Beyond</div>
+            <ul class="m-points">
+              <li>Containerized BESS 1–5 MWh for industrial &amp; grid</li>
+              <li>CUBEX &amp; TASoil+ launches</li>
+              <li>MegaVista 1.0 &amp; AI-driven energy optimization</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CUSTOMERS MARQUEE -->
+<section id="customers">
+  <div class="container reveal">
+    <div class="section-eyebrow">Our Customers</div>
+    <h2 class="section-title">Trusted by <span>Industry Leaders</span></h2>
+    <p class="section-sub">From India's largest renewable energy companies to critical defence organisations, TAPL delivers where reliability matters most.</p>
+  </div>
+  <div class="cust-marquee-outer">
+    <div class="cust-marquee" id="cust-marquee">
+      <div class="cust-card"><div class="cust-sector">Renewable Energy</div><div class="cust-name">Adani Solar</div><div class="cust-desc">14.4V/3.2Ah NMC tracker batteries for solar tracker systems. Large-scale deployments across India.</div><div class="cust-badge">1000+ Units Delivered</div></div>
+      <div class="cust-card"><div class="cust-sector">Renewable Energy</div><div class="cust-name">Aparrvaa Energy</div><div class="cust-desc">Solar tracker battery systems at scale. Strategic supply partnership for distributed solar infrastructure.</div><div class="cust-badge">Active Partner</div></div>
+      <div class="cust-card"><div class="cust-sector">Defence & Industrial</div><div class="cust-name">HBL Power Systems</div><div class="cust-desc">14.4V/7.5Ah Ventilator batteries and 3kW/10kW ALAGO Battery BLDC motor controllers.</div><div class="cust-badge">100+ Ventilator Units</div></div>
+      <div class="cust-card"><div class="cust-sector">Defence Systems</div><div class="cust-name">Alpha Elsec</div><div class="cust-desc">28.8V/120Ah Li-Ion battery pack for Long Range Telescope (LRT) defence application.</div><div class="cust-badge">Defence Certified</div></div>
+      <div class="cust-card"><div class="cust-sector">Electric Vehicles</div><div class="cust-name">Smart Magnum</div><div class="cust-desc">60V/45Ah L3 EV battery packs with custom BMS integration and lifecycle support.</div><div class="cust-badge">Active Supply</div></div>
+      <div class="cust-card"><div class="cust-sector">Energy Storage</div><div class="cust-name">Premier Energy, Lucknow</div><div class="cust-desc">161 kW BESS system — multi-rack LFP containerized storage for industrial renewable integration.</div><div class="cust-badge">161 kW BESS Live</div></div>
+      <div class="cust-card"><div class="cust-sector">Clean Water AWG</div><div class="cust-name">MAPL / Inglo</div><div class="cust-desc">Off-grid solar for 250 LPD Atmospheric Water Generator. MegaVista IoT + lithium battery packs.</div><div class="cust-badge">Full System Partner</div></div>
+      <div class="cust-card"><div class="cust-sector">Medical Devices</div><div class="cust-name">Medical OEMs</div><div class="cust-desc">Life-critical 14.4V/7.5Ah ventilator batteries meeting stringent medical reliability and safety standards.</div><div class="cust-badge">Life-Critical</div></div>
+      <div class="cust-card"><div class="cust-sector">OEM Partnership</div><div class="cust-name">E&C / OEM Partners</div><div class="cust-desc">±96V/24Ah centre-tapped Li-Ion and white-labeled BMS for tier-2 energy solution providers.</div><div class="cust-badge">Co-Development</div></div>
+      <!-- Duplicate for seamless loop -->
+      <div class="cust-card"><div class="cust-sector">Renewable Energy</div><div class="cust-name">Adani Solar</div><div class="cust-desc">14.4V/3.2Ah NMC tracker batteries for solar tracker systems. Large-scale deployments across India.</div><div class="cust-badge">1000+ Units Delivered</div></div>
+      <div class="cust-card"><div class="cust-sector">Renewable Energy</div><div class="cust-name">Aparrvaa Energy</div><div class="cust-desc">Solar tracker battery systems at scale. Strategic supply partnership for distributed solar infrastructure.</div><div class="cust-badge">Active Partner</div></div>
+      <div class="cust-card"><div class="cust-sector">Defence & Industrial</div><div class="cust-name">HBL Power Systems</div><div class="cust-desc">14.4V/7.5Ah Ventilator batteries and 3kW/10kW ALAGO Battery BLDC motor controllers.</div><div class="cust-badge">100+ Ventilator Units</div></div>
+      <div class="cust-card"><div class="cust-sector">Defence Systems</div><div class="cust-name">Alpha Elsec</div><div class="cust-desc">28.8V/120Ah Li-Ion battery pack for Long Range Telescope (LRT) defence application.</div><div class="cust-badge">Defence Certified</div></div>
+      <div class="cust-card"><div class="cust-sector">Electric Vehicles</div><div class="cust-name">Smart Magnum</div><div class="cust-desc">60V/45Ah L3 EV battery packs with custom BMS integration and lifecycle support.</div><div class="cust-badge">Active Supply</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- LEADERSHIP -->
+<section id="leadership">
+  <div class="container reveal">
+    <div class="section-eyebrow">Leadership Team</div>
+    <h2 class="section-title">The People <span>Behind TAPL</span></h2>
+    <p class="section-sub">IITians, CAs, engineers, and domain experts united by a single mission: powering tomorrow with intelligent energy.</p>
+    <div class="team-slider-wrap">
+      <div class="team-slider-track" id="team-track">
+        <div class="team-card">
+          <div class="team-top"><div class="team-avatar av-6">R</div><div class="team-name">Mr. RamaKrishna</div><div class="team-role">Founder &amp; MD</div></div>
+          <div class="team-body"><p>Visionary founder who established TAPL with a singular mission: indigenous, world-class energy and control technologies built in India. Anchors TAPL's culture of innovation and excellence.</p></div>
+        </div>
+        <div class="team-card">
+          <div class="team-top"><div class="team-avatar av-1">A</div><div class="team-name">Amirtha Swamy</div><div class="team-role">Chairman</div></div>
+          <div class="team-body"><p>IITian with 20+ years across aerospace, defence, IoT, and commercial sectors. Adept at transforming ideas into tangible, market-ready solutions.</p></div>
+        </div>
+        <div class="team-card">
+          <div class="team-top"><div class="team-avatar av-2">S</div><div class="team-name">Dr. U. Srinivasa Venu</div><div class="team-role">CTO</div></div>
+          <div class="team-body"><p>Distinguished professional with 27+ years in power and automotive sectors. Fellow in Mechanical Engineering, IIM Kozhikode. Expert in clean energy — hydrogen, solar, and wind.</p></div>
+        </div>
+        <div class="team-card">
+          <div class="team-top"><div class="team-avatar av-3">A</div><div class="team-name">Ashish Rajote</div><div class="team-role">VP – Operations</div></div>
+          <div class="team-body"><p>25+ years across Customer Service, Operations, Project Management, and Contact Center Operations spanning Telecom, Engineering, and Utilities.</p></div>
+        </div>
+        <div class="team-card">
+          <div class="team-top"><div class="team-avatar av-4">P</div><div class="team-name">Pradeep Kumar S</div><div class="team-role">Manager – Business Dev.</div></div>
+          <div class="team-body"><p>Electronics Engineer from Anna University with 12+ years in Aerospace &amp; Defence. QA and Project Management with SIKA Aerospace and ABS Group Oman.</p></div>
+        </div>
+        <div class="team-card">
+          <div class="team-top"><div class="team-avatar av-5">V</div><div class="team-name">Vijetha Mukkavilli</div><div class="team-role">Finance Director</div></div>
+          <div class="team-body"><p>Chartered Accountant, expertise honed at KPMG. Specializes in auditing, fund management, and operational strategy. Former Finance Director at Maithri Aquatech.</p></div>
+        </div>
+      </div>
+    </div>
+    <div class="team-slider-nav">
+      <button class="team-nav-btn" id="team-prev">←</button>
+      <div class="team-dots" id="team-dots"></div>
+      <button class="team-nav-btn" id="team-next">→</button>
+    </div>
+  </div>
+</section>
+
+<!-- FACILITIES -->
+<section id="facilities">
+  <div class="facilities-inner container reveal">
+    <div class="section-eyebrow">Our Facilities</div>
+    <h2 class="section-title" style="color:#fff;">Built to <span style="color:var(--teal-light);">Scale</span></h2>
+    <p class="section-sub" style="color:rgba(255,255,255,0.45);">State-of-the-art manufacturing, R&D, and quality infrastructure at IDA Cherlapalli, Hyderabad.</p>
+    <div class="fac-grid">
+      <div class="fac-card"><div class="fac-num">25,000</div><div class="fac-unit">Sq. Ft. — Production Facility</div><div class="fac-divider"></div><div class="fac-desc">Battery manufacturing and power electronics assembly with ERP-controlled workflow and ISO-aligned processes.</div></div>
+      <div class="fac-card"><div class="fac-num">2,000</div><div class="fac-unit">Sq. Ft. — Cell Storage</div><div class="fac-divider"></div><div class="fac-desc">Temperature-controlled, safety-compliant cell storage for LFP and NMC lithium chemistries with full traceability.</div></div>
+      <div class="fac-card"><div class="fac-num">1.5</div><div class="fac-unit">MWh / Month — Output</div><div class="fac-divider"></div><div class="fac-desc">Current monthly production for EV, BESS, and solar batteries. Expansion to additional 25,000 sq.ft. underway.</div></div>
+      <div class="fac-card"><div class="fac-num">R&D</div><div class="fac-unit">Innovation Lab</div><div class="fac-divider"></div><div class="fac-desc">Embedded systems lab, power electronics test rigs, environmental and lifecycle test chambers.</div></div>
+      <div class="fac-card"><div class="fac-num">100%</div><div class="fac-unit">Pre-Dispatch Testing</div><div class="fac-divider"></div><div class="fac-desc">Every product undergoes electrical, thermal, and mechanical testing before dispatch. Full production traceability.</div></div>
+      <div class="fac-card"><div class="fac-num">IDA</div><div class="fac-unit">Cherlapalli, Hyderabad</div><div class="fac-divider"></div><div class="fac-desc">Plot No. 158, Phase III, IDA Cherlapalli — premier industrial zone with excellent logistics and MSME support.</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section id="faq">
+  <div class="container reveal">
+    <div class="section-eyebrow">FAQ</div>
+    <h2 class="section-title">Common <span>Questions</span></h2>
+    <p class="section-sub">Everything you need to know about TAPL's products, capabilities, and partnerships.</p>
+    <div class="faq-list">
+      <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)"><span class="faq-q-text">What battery systems does TAPL manufacture?</span><span class="faq-icon">+</span></div><div class="faq-a"><div class="faq-a-inner">TAPL manufactures Li-Ion battery systems from 12.8V to 96V, 6Ah to 120Ah in LFP and NMC chemistries. Our range covers EV batteries (60V/45Ah), solar tracker batteries (14.4V/3.2Ah), medical ventilator batteries (14.4V/7.5Ah), defence HAA batteries (28.8V/120Ah), and containerized BESS from 1–5 MWh with our proprietary 5S–256S Smart BMS.</div></div></div>
+      <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)"><span class="faq-q-text">Does TAPL supply to defence organisations?</span><span class="faq-icon">+</span></div><div class="faq-a"><div class="faq-a-inner">Yes. Our Defence Division engineers mission-critical power systems to military-grade standards. Products include Li-Ion batteries for Long Range Telescope (LRT) systems, AFV sub-system power, torpedo BLDC motor controllers (3kW), and ruggedised BMS platforms for High Altitude Area (HAA) and Extreme Cold Climate (ECC) environments.</div></div></div>
+      <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)"><span class="faq-q-text">What are TAPL's hybrid inverter specifications?</span><span class="faq-icon">+</span></div><div class="faq-a"><div class="faq-a-inner">TAPL offers the TT1000VA (1kVA/800W, 25.6V battery), IG2000VA (2kVA/1600W, 48V battery), and TT3000VA (3kVA/2400W, 48V battery). All feature: Pure Sine Wave output, MPPT solar charging, UPS & Inverter modes, Solar/Grid priority, LCD display, and 4kV surge protection. Operating temperature: 0–50°C.</div></div></div>
+      <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)"><span class="faq-q-text">What is the TASoil+ sensor and who is it for?</span><span class="faq-icon">+</span></div><div class="faq-a"><div class="faq-a-inner">TASoil+ is a research-grade, rugged, buriable soil moisture and temperature sensor with ±2% accuracy, 8-second response time, 4–20mA output, and 15–30VDC operation. Designed for soil science, horticulture, precision irrigation, environmental research, sports turf management, and golf courses.</div></div></div>
+      <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)"><span class="faq-q-text">Can TAPL do custom or co-development projects?</span><span class="faq-icon">+</span></div><div class="faq-a"><div class="faq-a-inner">Absolutely. Co-development and OEM partnerships are central to TAPL's model. We engage in joint development of battery systems, embedded controllers, power electronics, and IoT platforms. We offer hardware/software IP licensing, white-labeled products, and long-term technology partnerships.</div></div></div>
+      <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)"><span class="faq-q-text">What is CUBEX and when does it launch?</span><span class="faq-icon">+</span></div><div class="faq-a"><div class="faq-a-inner">CUBEX is India's first portable power generator — a compact station that recharges 0 to 100% in just 2 hours, powering up to 5 devices simultaneously. Perfect for drones, outdoor work, camping, and power outages. Launching November 5, 2025.</div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="container reveal">
+    <div class="section-eyebrow">Contact Us</div>
+    <h2 class="section-title">Let's <span>Connect</span></h2>
+    <p class="section-sub">Whether you're looking for a product, a partner, or a solution — we'd love to hear from you.</p>
+    <div class="contact-grid">
+      <div>
+        <h3>Get in Touch</h3>
+        <p>Reach us directly or fill in the enquiry form and our team will respond within 24 hours.</p>
+        <div class="contact-item"><div class="contact-ico">📍</div><div class="contact-info"><strong>Address</strong><span>Plot No. 158, Phase III, IDA Cherlapalli,<br>Hyderabad, Telangana – 500 051, India</span></div></div>
+        <div class="contact-item"><div class="contact-ico">📞</div><div class="contact-info"><strong>Phone</strong><span>+91 88857 08126</span></div></div>
+        <div class="contact-item"><div class="contact-ico">✉️</div><div class="contact-info"><strong>Email</strong><span><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="57363a3e25233f3617233f323d223639363b2e233e34247934383a">[email&#160;protected]</a></span></div></div>
+        <div class="contact-item"><div class="contact-ico">🌐</div><div class="contact-info"><strong>Website</strong><span>www.thejuanalytics.com</span></div></div>
+      </div>
+      <div class="contact-form">
+        <form onsubmit="submitForm(event)">
+          <div class="form-row">
+            <div class="form-group"><label>Full Name *</label><input type="text" placeholder="Your name" required></div>
+            <div class="form-group"><label>Company</label><input type="text" placeholder="Your company"></div>
+          </div>
+          <div class="form-row">
+            <div class="form-group"><label>Email *</label><input type="email" placeholder="your@email.com" required></div>
+            <div class="form-group"><label>Phone</label><input type="tel" placeholder="+91 XXXXX XXXXX"></div>
+          </div>
+          <div class="form-group">
+            <label>Area of Interest</label>
+            <select>
+              <option>BESS / Energy Storage</option>
+              <option>Defence Power Systems</option>
+              <option>Li-Ion Battery Packs</option>
+              <option>Solar Hybrid Inverters</option>
+              <option>BLDC Motor Controllers</option>
+              <option>MEGIoT / MegaVista IoT</option>
+              <option>AgriTech / TASoil+</option>
+              <option>CUBEX Portable Power</option>
+              <option>EV Charging Solutions</option>
+              <option>Solar Street Lights</option>
+              <option>OEM Partnership / Co-Development</option>
+            </select>
+          </div>
+          <div class="form-group"><label>Message *</label><textarea rows="4" placeholder="Tell us about your project or requirement..." required></textarea></div>
+          <button type="submit" class="form-submit">Send Enquiry →</button>
+          <div class="form-success" id="form-success">✓ Message sent! We'll respond within 24 hours.</div>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <div style="display:flex;align-items:center;gap:10px;">
+          <div style="width:30px;height:30px;background:linear-gradient(135deg,var(--teal),var(--teal-light));border-radius:8px;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:14px;color:#fff;font-family:'Sora',sans-serif;">T</div>
+          <span style="font-family:'Sora',sans-serif;font-weight:700;font-size:16px;color:#fff;">Theju Analytics</span>
+        </div>
+        <p>Powering Tomorrow with Intelligent Energy Solutions. Built in India, engineered for the world.</p>
+      </div>
+      <div class="footer-col"><h4>Company</h4><a href="#about">About Us</a><a href="#milestones">Our Journey</a><a href="#leadership">Leadership</a><a href="#facilities">Facilities</a><a href="#customers">Customers</a></div>
+      <div class="footer-col"><h4>Divisions</h4><a href="#divisions">Energy Products</a><a href="#divisions">Defence Systems</a><a href="#divisions">AgriTech</a><a href="#divisions">IoT & Control</a><a href="#ev">EV Charging</a></div>
+      <div class="footer-col"><h4>Resources</h4><a href="#products">Product Portfolio</a><a href="#faq">FAQ</a><a href="#contact">Contact</a><a href="#" onclick="openModal('privacy')">Privacy Policy</a><a href="#" onclick="openModal('terms')">Terms of Use</a></div>
+    </div>
+    <div class="footer-bottom">
+      <span class="footer-copy">© 2025 Theju Analytics Pvt. Ltd. · Incorporated July 2023, Hyderabad, Telangana.</span>
+      <div class="footer-legal">
+        <a href="#" onclick="openModal('privacy')">Privacy Policy</a>
+        <a href="#" onclick="openModal('cookies')">Cookie Policy</a>
+        <a href="#" onclick="openModal('terms')">Terms of Use</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- BACK TO TOP -->
+<button id="back-to-top" onclick="window.scrollTo({top:0,behavior:'smooth'})" title="Back to top">↑</button>
+
+<!-- CHAT BUTTON & PANEL -->
+<button id="chat-btn" onclick="toggleChat()">
+  💬
+  <div class="chat-notif"></div>
+</button>
+<div class="chat-panel" id="chat-panel">
+  <div class="chat-header">
+    <div class="chat-avatar">⚡</div>
+    <div class="chat-header-info">
+      <h4>TAPL Support</h4>
+      <div class="chat-online">Online now</div>
+    </div>
+  </div>
+  <div class="chat-body" id="chat-body">
+    <div class="chat-msg bot">
+      <div class="chat-bubble">👋 Hi! Welcome to Theju Analytics. How can we help you today?</div>
+      <div class="chat-time">Just now</div>
+    </div>
+    <div class="chat-msg bot">
+      <div class="chat-bubble">Choose a quick option below, or type your question.</div>
+      <div class="chat-time">Just now</div>
+    </div>
+  </div>
+  <div class="chat-quick">
+    <button class="chat-quick-btn" onclick="chatQuick('BESS pricing')">BESS pricing</button>
+    <button class="chat-quick-btn" onclick="chatQuick('Defence solutions')">Defence solutions</button>
+    <button class="chat-quick-btn" onclick="chatQuick('EV Charging')">EV Charging</button>
+    <button class="chat-quick-btn" onclick="chatQuick('Partnership enquiry')">Partnership</button>
+  </div>
+  <div class="chat-footer">
+    <input class="chat-input" id="chat-input" type="text" placeholder="Type your message..." onkeydown="if(event.key==='Enter')sendChat()">
+    <button class="chat-send" onclick="sendChat()">→</button>
+  </div>
+</div>
+
+<!-- COOKIE BANNER -->
+<div id="cookie-banner">
+  <div class="cookie-title">🍪 We use cookies</div>
+  <div class="cookie-text">We use cookies to improve your experience. By continuing, you agree to our <a href="#" onclick="openModal('cookies')">Cookie Policy</a>.</div>
+  <div class="cookie-btns">
+    <button class="cookie-btn cookie-decline" onclick="dismissCookie()">Decline</button>
+    <button class="cookie-btn cookie-accept" onclick="dismissCookie()">Accept All</button>
+  </div>
+</div>
+
+<!-- MODALS -->
+<div class="modal-overlay" id="privacy-modal"><div class="modal"><button class="modal-close" onclick="closeModal('privacy')">✕</button><h2>Privacy Policy</h2><div class="modal-meta">Last updated: October 2025 · Theju Analytics Pvt. Ltd.</div><h3>Information We Collect</h3><p>We collect information you provide via contact forms, email, or business enquiries — including name, company, email, phone, and product requirements.</p><h3>How We Use It</h3><p>To respond to enquiries, provide quotations and product information, improve our services, and communicate about TAPL innovations.</p><h3>Data Sharing</h3><p>TAPL does not sell or rent your personal information. Data may be shared with trusted partners solely to fulfil your enquiry.</p><h3>Contact</h3><p><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="dcbdb1b5aea8b4bd9ca8b4b9b6a9bdb2bdb0a5a8b5bfaff2bfb3b1">[email&#160;protected]</a> · +91 88857 08126 · Plot No. 158, Phase III, IDA Cherlapalli, Hyderabad – 500051</p></div></div>
+<div class="modal-overlay" id="cookies-modal"><div class="modal"><button class="modal-close" onclick="closeModal('cookies')">✕</button><h2>Cookie Policy</h2><div class="modal-meta">Last updated: October 2025</div><h3>Essential Cookies</h3><p>Required for core website functionality. These cannot be disabled.</p><h3>Analytics Cookies</h3><p>Help us understand traffic through anonymised, aggregated data to improve our site.</p><h3>Managing Cookies</h3><p>Control cookies via your browser settings. Disabling some may affect functionality.</p></div></div>
+<div class="modal-overlay" id="terms-modal"><div class="modal"><button class="modal-close" onclick="closeModal('terms')">✕</button><h2>Terms of Use</h2><div class="modal-meta">Last updated: October 2025</div><h3>Acceptance</h3><p>By accessing the TAPL website, you agree to these Terms of Use.</p><h3>Intellectual Property</h3><p>All content is the property of Theju Analytics Pvt. Ltd. and may not be reproduced without written permission.</p><h3>Governing Law</h3><p>Governed by the laws of India. Disputes subject to jurisdiction of courts in Hyderabad, Telangana.</p></div></div>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+// ─── REVEAL ───
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold:0.07, rootMargin:'0px 0px -20px 0px' });
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+// Stagger cards
+document.querySelectorAll('.team-grid .team-card, .div-card, .fac-card').forEach((el,i) => {
+  el.style.transitionDelay = (i * 0.06) + 's';
+});
+
+// ─── NAV SHADOW ───
+window.addEventListener('scroll', () => {
+  document.getElementById('navbar').style.boxShadow = window.scrollY > 30 ? '0 1px 20px rgba(0,0,0,0.08)' : 'none';
+  // Back to top
+  const btn = document.getElementById('back-to-top');
+  btn.classList.toggle('visible', window.scrollY > 500);
+});
+
+// ─── FAQ ───
+function toggleFaq(el) {
+  const item = el.parentElement;
+  const isOpen = item.classList.contains('open');
+  document.querySelectorAll('.faq-item').forEach(f => {
+    f.classList.remove('open');
+    f.querySelector('.faq-a').style.maxHeight = '0';
+  });
+  if(!isOpen) {
+    item.classList.add('open');
+    item.querySelector('.faq-a').style.maxHeight = item.querySelector('.faq-a').scrollHeight + 'px';
+  }
+}
+
+// ─── FORM ───
+function submitForm(e) {
+  e.preventDefault();
+  const s = document.getElementById('form-success');
+  s.style.display = 'block';
+  e.target.reset();
+  setTimeout(() => s.style.display = 'none', 5000);
+}
+
+// ─── COOKIE ───
+function dismissCookie() {
+  document.getElementById('cookie-banner').style.display = 'none';
+  try { localStorage.setItem('cookieOk','1'); } catch(e){}
+}
+setTimeout(() => {
+  let ok = false;
+  try { ok = localStorage.getItem('cookieOk'); } catch(e){}
+  if(!ok) document.getElementById('cookie-banner').style.display = 'block';
+}, 2000);
+
+// ─── MODALS ───
+function openModal(t) { document.getElementById(t+'-modal').classList.add('open'); }
+function closeModal(t) { document.getElementById(t+'-modal').classList.remove('open'); }
+document.querySelectorAll('.modal-overlay').forEach(m => m.addEventListener('click', e => { if(e.target===m) m.classList.remove('open'); }));
+
+// ─── PRODUCT CAROUSEL ───
+const track = document.getElementById('carousel');
+const SCROLL_AMT = 340;
+document.getElementById('next-btn').addEventListener('click', () => track.scrollBy({left:SCROLL_AMT, behavior:'smooth'}));
+document.getElementById('prev-btn').addEventListener('click', () => track.scrollBy({left:-SCROLL_AMT, behavior:'smooth'}));
+
+// Drag to scroll
+let isDown = false, startX, scrollLeft;
+track.addEventListener('mousedown', e => { isDown=true; track.classList.add('grabbing'); startX=e.pageX-track.offsetLeft; scrollLeft=track.scrollLeft; });
+track.addEventListener('mouseleave', () => { isDown=false; track.classList.remove('grabbing'); });
+track.addEventListener('mouseup', () => { isDown=false; track.classList.remove('grabbing'); });
+track.addEventListener('mousemove', e => { if(!isDown) return; e.preventDefault(); const x=e.pageX-track.offsetLeft; const walk=(x-startX)*1.5; track.scrollLeft=scrollLeft-walk; });
+
+// ─── CHAT ───
+let chatOpen = false;
+function toggleChat() {
+  chatOpen = !chatOpen;
+  document.getElementById('chat-panel').classList.toggle('open', chatOpen);
+  document.querySelector('#chat-btn .chat-notif').style.display = 'none';
+}
+document.addEventListener('click', e => {
+  if(chatOpen && !e.target.closest('#chat-btn') && !e.target.closest('.chat-panel')) {
+    chatOpen = false;
+    document.getElementById('chat-panel').classList.remove('open');
+  }
+});
+
+const chatReplies = {
+  'bess pricing': "Our BESS solutions range from 1–5 MWh containerized systems. For pricing tailored to your scale and application, please share your project requirements via our contact form or call +91 88857 08126.",
+  'defence solutions': "TAPL's Defence Division supplies HAA Li-Ion batteries, torpedo BLDC motor controllers, AFV power systems, and ruggedized BMS. We work with DRDO-registered entities. Contact us to discuss your requirements.",
+  'ev charging': "We offer AC and DC EV chargers for 2W, 3W, and 4W vehicles with our in-house CMS + mobile app. Full lifecycle support included. Contact us for a site assessment.",
+  'partnership enquiry': "We welcome OEM partnerships and co-development projects. We offer white-labeled products, IP licensing, and joint R&D. Contact amirtha@thejuanalytics.com to get started.",
+};
+
+function chatQuick(topic) {
+  addChatMsg(topic, 'user');
+  const key = topic.toLowerCase();
+  const reply = chatReplies[key] || "Thanks for your message! Our team will be in touch shortly. You can also reach us at +91 88857 08126 or amirtha@thejuanalytics.com.";
+  setTimeout(() => addChatMsg(reply, 'bot'), 600);
+}
+
+function sendChat() {
+  const input = document.getElementById('chat-input');
+  const msg = input.value.trim();
+  if(!msg) return;
+  addChatMsg(msg, 'user');
+  input.value = '';
+  setTimeout(() => addChatMsg("Thanks for reaching out! Our team will respond within 24 hours. For urgent queries call +91 88857 08126.", 'bot'), 700);
+}
+
+function addChatMsg(text, role) {
+  const body = document.getElementById('chat-body');
+  const div = document.createElement('div');
+  div.className = `chat-msg ${role}`;
+  div.innerHTML = `<div class="chat-bubble">${text}</div><div class="chat-time">Just now</div>`;
+  body.appendChild(div);
+  body.scrollTop = body.scrollHeight;
+}
+
+// ─── COUNTER ANIMATION ───
+const counterObs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if(e.isIntersecting) {
+      e.target.querySelectorAll('.h-stat-num').forEach(el => {
+        const num = parseFloat(el.textContent);
+        const inner = el.innerHTML;
+        if(!isNaN(num) && num > 2) {
+          let cur = 0; const steps = 60; const inc = num / steps;
+          const badge = el.querySelector('.h-stat-unit') ? `<span class="h-stat-unit">${el.querySelector('.h-stat-unit').textContent}</span>` : '';
+          const t = setInterval(() => {
+            cur = Math.min(cur + inc, num);
+            const display = num >= 1000 ? Math.floor(cur).toLocaleString() : (cur % 1 !== 0 && num < 100 ? cur.toFixed(1) : Math.floor(cur));
+            el.innerHTML = display + badge;
+            if(cur >= num) clearInterval(t);
+          }, 30);
+        }
+      });
+      counterObs.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.3 });
+document.querySelectorAll('.hero-stats').forEach(el => counterObs.observe(el));
+
+// ─── PRODUCT AUTO-SLIDE ───
+(function() {
+  var track = document.getElementById('carousel');
+  if (!track) return;
+  var autoSlide = setInterval(function() {
+    var maxScroll = track.scrollWidth - track.clientWidth;
+    if (track.scrollLeft >= maxScroll - 10) {
+      track.scrollTo({left: 0, behavior: 'smooth'});
+    } else {
+      track.scrollBy({left: 340, behavior: 'smooth'});
+    }
+  }, 2800);
+  // Pause on hover
+  track.addEventListener('mouseenter', function() { clearInterval(autoSlide); });
+  track.addEventListener('mouseleave', function() {
+    autoSlide = setInterval(function() {
+      var maxScroll = track.scrollWidth - track.clientWidth;
+      if (track.scrollLeft >= maxScroll - 10) {
+        track.scrollTo({left: 0, behavior: 'smooth'});
+      } else {
+        track.scrollBy({left: 340, behavior: 'smooth'});
+      }
+    }, 2800);
+  });
+})();
+
+// ─── TEAM SLIDER ───
+(function() {
+  var track = document.getElementById('team-track');
+  var dotsWrap = document.getElementById('team-dots');
+  var prevBtn = document.getElementById('team-prev');
+  var nextBtn = document.getElementById('team-next');
+  if (!track) return;
+  var cards = track.querySelectorAll('.team-card');
+  var total = cards.length;
+  var visibleCount = window.innerWidth < 600 ? 1 : window.innerWidth < 900 ? 2 : 3;
+  var current = 0;
+  var cardW = 340; // matches flex-basis
+  var gap = 20;
+  var autoTimer;
+
+  // Build dots
+  var maxIndex = total - visibleCount;
+  for (var i = 0; i <= maxIndex; i++) {
+    var d = document.createElement('div');
+    d.className = 'team-dot' + (i === 0 ? ' active' : '');
+    d.setAttribute('data-i', i);
+    d.addEventListener('click', function() { goTo(parseInt(this.getAttribute('data-i'))); });
+    dotsWrap.appendChild(d);
+  }
+
+  function goTo(idx) {
+    current = Math.max(0, Math.min(idx, maxIndex));
+    track.style.transform = 'translateX(-' + (current * (cardW + gap)) + 'px)';
+    dotsWrap.querySelectorAll('.team-dot').forEach(function(d, i) {
+      d.classList.toggle('active', i === current);
+    });
+  }
+
+  function next() { goTo(current >= maxIndex ? 0 : current + 1); }
+  function prev() { goTo(current <= 0 ? maxIndex : current - 1); }
+
+  nextBtn && nextBtn.addEventListener('click', function() { next(); resetAuto(); });
+  prevBtn && prevBtn.addEventListener('click', function() { prev(); resetAuto(); });
+
+  function startAuto() { autoTimer = setInterval(next, 3200); }
+  function resetAuto() { clearInterval(autoTimer); startAuto(); }
+
+  // Pause on hover
+  track.addEventListener('mouseenter', function() { clearInterval(autoTimer); });
+  track.addEventListener('mouseleave', startAuto);
+
+  startAuto();
+})();
+
+// ─── JOURNEY SCROLL ANIMATION ───
+var journeyObs = new IntersectionObserver(function(entries) {
+  entries.forEach(function(e) {
+    if (e.isIntersecting) {
+      var milestones = e.target.querySelectorAll('.milestone');
+      milestones.forEach(function(m, i) {
+        setTimeout(function() { m.classList.add('m-visible'); }, i * 130);
+      });
+      journeyObs.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.15 });
+var tt = document.querySelector('.timeline-track');
+if (tt) journeyObs.observe(tt);
+
+// ─── HERO CANVAS — MODERN TECH ANIMATION ───
+(function() {
+  var canvas = document.getElementById('hero-canvas');
+  if (!canvas) return;
+  var ctx = canvas.getContext('2d');
+  var W, H, nodes = [], orbs = [], trails = [], raf;
+  var t = 0;
+
+  function resize() {
+    W = canvas.width  = canvas.parentElement.offsetWidth;
+    H = canvas.height = canvas.parentElement.offsetHeight;
+    buildNodes();
+    buildOrbs();
+  }
+
+  function buildNodes() {
+    nodes = [];
+    var count = Math.min(70, Math.floor(W * H / 11000));
+    for (var i = 0; i < count; i++) {
+      nodes.push({
+        x: Math.random()*W, y: Math.random()*H,
+        vx:(Math.random()-.5)*.4, vy:(Math.random()-.5)*.4,
+        r: Math.random()*1.8+0.6,
+        bright: Math.random() > 0.85,
+        phase: Math.random()*Math.PI*2
+      });
+    }
+  }
+
+  function buildOrbs() {
+    orbs = [
+      {x:W*.72,y:H*.3, r:220,col:'rgba(0,168,120,',ox:W*.72,oy:H*.3 },
+      {x:W*.15,y:H*.65,r:180,col:'rgba(0,120,200,',ox:W*.15,oy:H*.65},
+      {x:W*.5, y:H*.1, r:140,col:'rgba(0,200,150,',ox:W*.5, oy:H*.1 }
+    ];
+  }
+
+  function spawnTrail(x,y){ trails.push({x:x,y:y,life:1,size:Math.random()*3+1.5}); }
+
+  function draw() {
+    t += 0.012;
+    ctx.clearRect(0,0,W,H);
+
+    // Orbs
+    for (var i=0;i<orbs.length;i++) {
+      var o=orbs[i];
+      o.x=o.ox+Math.cos(t*0.7)*60; o.y=o.oy+Math.sin(t*0.9)*40;
+      var g=ctx.createRadialGradient(o.x,o.y,0,o.x,o.y,o.r);
+      g.addColorStop(0,o.col+'0.07)'); g.addColorStop(0.5,o.col+'0.035)'); g.addColorStop(1,o.col+'0)');
+      ctx.fillStyle=g; ctx.beginPath(); ctx.arc(o.x,o.y,o.r,0,Math.PI*2); ctx.fill();
+    }
+
+    // Lines between nodes
+    var maxD=140;
+    for (var i=0;i<nodes.length;i++) {
+      var n=nodes[i];
+      n.x+=n.vx; n.y+=n.vy;
+      if(n.x<0)n.x=W; if(n.x>W)n.x=0; if(n.y<0)n.y=H; if(n.y>H)n.y=0;
+      for (var j=i+1;j<nodes.length;j++) {
+        var m=nodes[j];
+        var dx=n.x-m.x,dy=n.y-m.y,d=Math.sqrt(dx*dx+dy*dy);
+        if(d<maxD){
+          var a=(1-d/maxD)*0.18*(n.bright||m.bright?2.5:1);
+          ctx.beginPath(); ctx.moveTo(n.x,n.y); ctx.lineTo(m.x,m.y);
+          ctx.strokeStyle='rgba(0,168,120,'+a+')'; ctx.lineWidth=0.8; ctx.stroke();
+        }
+      }
+    }
+
+    // Nodes
+    for (var i=0;i<nodes.length;i++) {
+      var n=nodes[i];
+      var pulse=n.bright?0.6+0.35*Math.sin(t*2.5+n.phase):0.22+0.1*Math.sin(t+n.phase);
+      var r=n.bright?n.r*(1.4+0.4*Math.sin(t*2+n.phase)):n.r;
+      if(n.bright){
+        var glo=ctx.createRadialGradient(n.x,n.y,0,n.x,n.y,r*7);
+        glo.addColorStop(0,'rgba(0,168,120,'+(pulse*0.5)+')'); glo.addColorStop(1,'rgba(0,168,120,0)');
+        ctx.fillStyle=glo; ctx.beginPath(); ctx.arc(n.x,n.y,Math.max(0,r*7),0,Math.PI*2); ctx.fill();
+      }
+      ctx.beginPath(); ctx.arc(n.x,n.y,Math.max(0,r),0,Math.PI*2);
+      ctx.fillStyle='rgba(0,168,120,'+pulse+')'; ctx.fill();
+      if(n.bright&&Math.random()<0.012) spawnTrail(n.x,n.y);
+    }
+
+    // Trail sparkles
+    trails=trails.filter(function(s){return s.life>0.04;});
+    for(var i=0;i<trails.length;i++){
+      var s=trails[i]; s.life-=0.035;
+      ctx.beginPath();
+      ctx.arc(s.x+(Math.random()-.5)*20,s.y+(Math.random()-.5)*20,Math.max(0,s.size*s.life),0,Math.PI*2);
+      ctx.fillStyle='rgba(0,220,160,'+(s.life*0.55)+')'; ctx.fill();
+    }
+
+    // Energy wave
+    var waveY=H*0.88;
+    ctx.beginPath(); ctx.moveTo(0,H);
+    for(var x=0;x<=W;x+=4){
+      var y=waveY+Math.sin((x/W)*Math.PI*3+t*1.4)*18+Math.sin((x/W)*Math.PI*7-t*2.1)*8;
+      ctx.lineTo(x,y);
+    }
+    ctx.lineTo(W,H); ctx.closePath();
+    var wg=ctx.createLinearGradient(0,waveY-30,0,H);
+    wg.addColorStop(0,'rgba(0,168,120,0.07)'); wg.addColorStop(1,'rgba(0,168,120,0)');
+    ctx.fillStyle=wg; ctx.fill();
+    ctx.beginPath();
+    for(var x=0;x<=W;x+=4){
+      var y=waveY+Math.sin((x/W)*Math.PI*3+t*1.4)*18+Math.sin((x/W)*Math.PI*7-t*2.1)*8;
+      x===0?ctx.moveTo(x,y):ctx.lineTo(x,y);
+    }
+    ctx.strokeStyle='rgba(0,200,140,0.25)'; ctx.lineWidth=1.5; ctx.stroke();
+
+    raf=requestAnimationFrame(draw);
+  }
+
+  function init(){ resize(); cancelAnimationFrame(raf); draw(); }
+  window.addEventListener('resize',function(){cancelAnimationFrame(raf);init();});
+  init();
+})();
+
+</script>
+</body>
+</html>
