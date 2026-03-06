@@ -580,18 +580,103 @@ section { padding:100px 24px; }
 }
 .team-dot.active { width:24px; border-radius:4px; background:var(--teal); }
 
-/* ─── FACILITIES ─── */
+/* ─── FACILITIES / BUILT TO SCALE ─── */
 #leadership { background:var(--off-white); }
-#facilities { background:var(--dark-gray); color:#fff; padding:100px 24px; }
+#facilities {
+  position:relative; overflow:hidden;
+  background:linear-gradient(135deg, #050f0a 0%, #0a1a12 40%, #051510 100%);
+  color:#fff; padding:120px 24px 100px;
+}
+#facilities::before {
+  content:''; position:absolute;
+  width:700px; height:700px;
+  background:radial-gradient(ellipse, rgba(0,168,120,0.13) 0%, transparent 70%);
+  top:-180px; left:-150px; pointer-events:none; border-radius:50%;
+}
+#facilities::after {
+  content:''; position:absolute;
+  width:500px; height:500px;
+  background:radial-gradient(ellipse, rgba(0,153,255,0.08) 0%, transparent 70%);
+  bottom:-100px; right:-100px; pointer-events:none; border-radius:50%;
+}
+.facilities-inner { position:relative; z-index:1; }
 .facilities-inner .section-title { color:#fff; }
 .facilities-inner .section-eyebrow { color:var(--teal-light); }
-.fac-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:2px; margin-top:56px; border-radius:var(--radius); overflow:hidden; }
-.fac-card { background:rgba(255,255,255,0.04); padding:44px 32px; transition:background 0.3s; }
-.fac-card:hover { background:rgba(0,168,120,0.12); }
-.fac-num { font-family:'Sora',sans-serif; font-size:42px; font-weight:900; color:var(--teal-light); letter-spacing:-2px; line-height:1; }
-.fac-unit { font-size:12px; color:rgba(255,255,255,0.35); font-weight:500; margin-bottom:14px; }
-.fac-divider { width:28px; height:2px; background:var(--teal); margin:14px 0; }
-.fac-desc { font-size:13.5px; color:rgba(255,255,255,0.45); line-height:1.7; }
+/* Hero stat bar */
+.fac-hero-stats {
+  display:flex; justify-content:center; gap:0;
+  margin:56px 0 64px;
+  background:rgba(255,255,255,0.03);
+  border:1px solid rgba(255,255,255,0.07);
+  border-radius:20px; overflow:hidden;
+  backdrop-filter:blur(12px);
+}
+.fac-hero-stat {
+  flex:1; padding:36px 28px; text-align:center;
+  border-right:1px solid rgba(255,255,255,0.07); transition:background 0.3s;
+}
+.fac-hero-stat:last-child { border-right:none; }
+.fac-hero-stat:hover { background:rgba(0,168,120,0.08); }
+.fac-hero-num {
+  font-family:'Sora',sans-serif;
+  font-size:clamp(26px,3.5vw,48px); font-weight:900;
+  color:var(--teal-light); letter-spacing:-2px; line-height:1; display:block;
+}
+.fac-hero-label {
+  font-size:11px; font-weight:700; color:rgba(255,255,255,0.38);
+  letter-spacing:1.2px; text-transform:uppercase; margin-top:8px; display:block;
+}
+/* Card grid */
+.fac-grid {
+  display:grid; grid-template-columns:repeat(3,1fr);
+  gap:16px; margin-top:0; border-radius:0; overflow:visible;
+}
+.fac-card {
+  position:relative; overflow:hidden;
+  background:rgba(255,255,255,0.04);
+  border:1px solid rgba(255,255,255,0.08);
+  border-radius:20px; padding:36px 30px 32px;
+  transition:all 0.4s cubic-bezier(0.16,1,0.3,1);
+}
+.fac-card::before {
+  content:''; position:absolute; top:0; left:0; right:0; height:3px;
+  background:linear-gradient(90deg,var(--teal),#0099ff,var(--teal-light));
+  opacity:0; transition:opacity 0.4s;
+}
+.fac-card::after {
+  content:''; position:absolute; inset:0; border-radius:20px;
+  background:radial-gradient(ellipse at 30% 0%, rgba(0,168,120,0.14), transparent 60%);
+  opacity:0; transition:opacity 0.4s; pointer-events:none;
+}
+.fac-card:hover { background:rgba(255,255,255,0.07); border-color:rgba(0,168,120,0.3); transform:translateY(-6px); box-shadow:0 24px 60px rgba(0,0,0,0.4), 0 0 0 1px rgba(0,168,120,0.2); }
+.fac-card:hover::before { opacity:1; }
+.fac-card:hover::after { opacity:1; }
+.fac-icon {
+  width:48px; height:48px; border-radius:14px;
+  background:linear-gradient(135deg, rgba(0,168,120,0.2), rgba(0,153,255,0.15));
+  border:1px solid rgba(0,168,120,0.25);
+  display:flex; align-items:center; justify-content:center;
+  font-size:22px; margin-bottom:20px; transition:all 0.3s;
+}
+.fac-card:hover .fac-icon { background:linear-gradient(135deg, rgba(0,168,120,0.35), rgba(0,153,255,0.25)); box-shadow:0 0 24px rgba(0,168,120,0.3); }
+.fac-num {
+  font-family:'Sora',sans-serif; font-size:36px; font-weight:900;
+  letter-spacing:-1.5px; line-height:1;
+  background:linear-gradient(135deg, #fff 40%, var(--teal-light));
+  -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
+}
+.fac-unit { font-size:11px; color:rgba(255,255,255,0.4); font-weight:700; letter-spacing:1px; text-transform:uppercase; margin-bottom:12px; margin-top:4px; display:block; }
+.fac-divider { width:24px; height:2px; background:linear-gradient(90deg,var(--teal),transparent); margin:14px 0; }
+.fac-desc { font-size:13px; color:rgba(255,255,255,0.5); line-height:1.75; }
+@media(max-width:899px){ .fac-grid { grid-template-columns:1fr 1fr; } }
+@media(max-width:599px){
+  .fac-hero-stats { flex-direction:column; }
+  .fac-hero-stat { border-right:none; border-bottom:1px solid rgba(255,255,255,0.07); }
+  .fac-hero-stat:last-child { border-bottom:none; }
+  .fac-grid { grid-template-columns:1fr; gap:12px; }
+  .fac-card { padding:28px 22px 24px; }
+  #facilities { padding:80px 20px 72px; }
+}
 
 /* ─── STREET LIGHT & EV ─── */
 #streetlight { background:var(--white); }
@@ -2171,16 +2256,20 @@ footer::after {
           <div class="team-body"><p>Visionary founder who established TAPL with a singular mission: indigenous, world-class energy and control technologies built in India. Anchors TAPL's culture of innovation and excellence.</p></div>
         </div>
         <div class="team-card">
-          <div class="team-top"><div class="team-avatar av-1">A</div><div class="team-name">Amirtha Swamy</div><div class="team-role">Chairman</div></div>
+          <div class="team-top"><div class="team-avatar av-1">A</div><div class="team-name">Amirtha Swamy</div><div class="team-role">CTO</div></div>
           <div class="team-body"><p>IITian with 20+ years across aerospace, defence, IoT, and commercial sectors. Adept at transforming ideas into tangible, market-ready solutions.</p></div>
         </div>
         <div class="team-card">
-          <div class="team-top"><div class="team-avatar av-2">S</div><div class="team-name">Dr. U. Srinivasa Venu</div><div class="team-role">CTO</div></div>
+          <div class="team-top"><div class="team-avatar av-2">S</div><div class="team-name">Dr. U. Srinivasa Venu</div><div class="team-role">Chairman</div></div>
           <div class="team-body"><p>Distinguished professional with 27+ years in power and automotive sectors. Fellow in Mechanical Engineering, IIM Kozhikode. Expert in clean energy — hydrogen, solar, and wind.</p></div>
         </div>
         <div class="team-card">
           <div class="team-top"><div class="team-avatar av-3">A</div><div class="team-name">Ashish Rajote</div><div class="team-role">VP – Operations</div></div>
           <div class="team-body"><p>25+ years across Customer Service, Operations, Project Management, and Contact Center Operations spanning Telecom, Engineering, and Utilities.</p></div>
+        </div>
+        <div class="team-card">
+          <div class="team-top"><div class="team-avatar av-4">K</div><div class="team-name">K. Jayachandran</div><div class="team-role">VP – Business Dev.</div></div>
+          <div class="team-body"><p>Seasoned professional with 30+ years of experience across energy segments — Batteries, Battery Chargers, Operations &amp; Projects, and Solar Parks. Brings cross-functional industry expertise in Power, Industries, and Telecom.</p></div>
         </div>
         <div class="team-card">
           <div class="team-top"><div class="team-avatar av-4">P</div><div class="team-name">Pradeep Kumar S</div><div class="team-role">Manager – Business Dev.</div></div>
@@ -2206,13 +2295,70 @@ footer::after {
     <div class="section-eyebrow">Our Facilities</div>
     <h2 class="section-title" style="color:#fff;">Built to <span style="color:var(--teal-light);">Scale</span></h2>
     <p class="section-sub" style="color:rgba(255,255,255,0.45);">State-of-the-art manufacturing, R&D, and quality infrastructure at IDA Cherlapalli, Hyderabad.</p>
+
+    <!-- Hero stat bar -->
+    <div class="fac-hero-stats">
+      <div class="fac-hero-stat">
+        <span class="fac-hero-num">25K+</span>
+        <span class="fac-hero-label">Sq. Ft. Facility</span>
+      </div>
+      <div class="fac-hero-stat">
+        <span class="fac-hero-num">1.5 MWh</span>
+        <span class="fac-hero-label">Monthly Output</span>
+      </div>
+      <div class="fac-hero-stat">
+        <span class="fac-hero-num">100%</span>
+        <span class="fac-hero-label">Pre-Dispatch Tested</span>
+      </div>
+      <div class="fac-hero-stat">
+        <span class="fac-hero-num">ISO</span>
+        <span class="fac-hero-label">Aligned Processes</span>
+      </div>
+    </div>
+
     <div class="fac-grid">
-      <div class="fac-card"><div class="fac-num">25,000</div><div class="fac-unit">Sq. Ft. — Production Facility</div><div class="fac-divider"></div><div class="fac-desc">Battery manufacturing and power electronics assembly with ERP-controlled workflow and ISO-aligned processes.</div></div>
-      <div class="fac-card"><div class="fac-num">2,000</div><div class="fac-unit">Sq. Ft. — Cell Storage</div><div class="fac-divider"></div><div class="fac-desc">Temperature-controlled, safety-compliant cell storage for LFP and NMC lithium chemistries with full traceability.</div></div>
-      <div class="fac-card"><div class="fac-num">1.5</div><div class="fac-unit">MWh / Month — Output</div><div class="fac-divider"></div><div class="fac-desc">Current monthly production for EV, BESS, and solar batteries. Expansion to additional 25,000 sq.ft. underway.</div></div>
-      <div class="fac-card"><div class="fac-num">R&D</div><div class="fac-unit">Innovation Lab</div><div class="fac-divider"></div><div class="fac-desc">Embedded systems lab, power electronics test rigs, environmental and lifecycle test chambers.</div></div>
-      <div class="fac-card"><div class="fac-num">100%</div><div class="fac-unit">Pre-Dispatch Testing</div><div class="fac-divider"></div><div class="fac-desc">Every product undergoes electrical, thermal, and mechanical testing before dispatch. Full production traceability.</div></div>
-      <div class="fac-card"><div class="fac-num">IDA</div><div class="fac-unit">Cherlapalli, Hyderabad</div><div class="fac-divider"></div><div class="fac-desc">Plot No. 158, Phase III, IDA Cherlapalli — premier industrial zone with excellent logistics and MSME support.</div></div>
+      <div class="fac-card">
+        <div class="fac-icon">🏭</div>
+        <div class="fac-num">25,000</div>
+        <div class="fac-unit">Sq. Ft. — Production Facility</div>
+        <div class="fac-divider"></div>
+        <div class="fac-desc">Battery manufacturing and power electronics assembly with ERP-controlled workflow and ISO-aligned processes.</div>
+      </div>
+      <div class="fac-card">
+        <div class="fac-icon">🔋</div>
+        <div class="fac-num">2,000</div>
+        <div class="fac-unit">Sq. Ft. — Cell Storage</div>
+        <div class="fac-divider"></div>
+        <div class="fac-desc">Temperature-controlled, safety-compliant cell storage for LFP and NMC lithium chemistries with full traceability.</div>
+      </div>
+      <div class="fac-card">
+        <div class="fac-icon">⚡</div>
+        <div class="fac-num">1.5</div>
+        <div class="fac-unit">MWh / Month — Output</div>
+        <div class="fac-divider"></div>
+        <div class="fac-desc">Current monthly production for EV, BESS, and solar batteries. Expansion to additional 25,000 sq.ft. underway.</div>
+      </div>
+      <div class="fac-card">
+        <div class="fac-icon">🔬</div>
+        <div class="fac-num">R&D</div>
+        <div class="fac-unit">Innovation Lab</div>
+        <div class="fac-divider"></div>
+        <div class="fac-desc">Embedded systems lab, power electronics test rigs, environmental and lifecycle test chambers.</div>
+      </div>
+      <div class="fac-card">
+        <div class="fac-icon">✅</div>
+        <div class="fac-num">100%</div>
+        <div class="fac-unit">Pre-Dispatch Testing</div>
+        <div class="fac-divider"></div>
+        <div class="fac-desc">Every product undergoes electrical, thermal, and mechanical testing before dispatch. Full production traceability.</div>
+      </div>
+      <div class="fac-card">
+        <div class="fac-icon">📍</div>
+        <div class="fac-num">IDA</div>
+        <div class="fac-unit">Cherlapalli, Hyderabad</div>
+        <div class="fac-divider"></div>
+        <div class="fac-desc">Plot No. 158, Phase III, IDA Cherlapalli — premier industrial zone with excellent logistics and MSME support.</div>
+      </div>
     </div>
   </div>
 </section>
@@ -2529,7 +2675,7 @@ var KB = [
 
   // Leadership / Team
   { keys:['team','leadership','chairman','cto','vp','director','amirtha','srinivasa','ashish','pradeep','vijetha','people behind'],
-    reply:"<strong>TAPL Leadership Team:</strong><br>• <strong>Mr. RamaKrishna</strong> — Founder & MD<br>• <strong>Amirtha Swamy</strong> — Chairman (IITian, 20+ yrs aerospace & defence)<br>• <strong>Dr. U. Srinivasa Venu</strong> — CTO (27+ yrs, IIM Kozhikode Fellow, clean energy expert)<br>• <strong>Ashish Rajote</strong> — VP Operations (25+ yrs telecom & engineering)<br>• <strong>Pradeep Kumar S</strong> — Manager Business Dev. (12+ yrs Aerospace & Defence, Anna University)<br>• <strong>Vijetha Mukkavilli</strong> — Finance Director (CA, ex-KPMG)" },
+    reply:"<strong>TAPL Leadership Team:</strong><br>• <strong>Mr. RamaKrishna</strong> — Founder & MD<br>• <strong>Dr. U. Srinivasa Venu</strong> — Chairman (27+ yrs, IIM Kozhikode Fellow, clean energy expert)<br>• <strong>Amirtha Swamy</strong> — CTO (IITian, 20+ yrs aerospace & defence)<br>• <strong>Ashish Rajote</strong> — VP Operations (25+ yrs telecom & engineering)<br>• <strong>K. Jayachandran</strong> — VP Business Dev. (30+ yrs energy, batteries, solar parks)<br>• <strong>Pradeep Kumar S</strong> — Manager Business Dev. (12+ yrs Aerospace & Defence, Anna University)<br>• <strong>Vijetha Mukkavilli</strong> — Finance Director (CA, ex-KPMG)" },
 
   // BESS
   { keys:['bess','battery energy storage','energy storage','containerized','mwh','grid storage','lfp','solar storage'],
