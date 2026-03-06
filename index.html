@@ -522,10 +522,14 @@ section { padding:100px 24px; }
 }
 .team-card {
   flex:0 0 320px;
+  width:320px;
   background:#fff; border-radius:var(--radius-lg);
   overflow:hidden; border:1px solid var(--light-gray);
   transition:all 0.3s;
   position:relative;
+}
+@media(max-width:599px){
+  .team-card { flex:0 0 calc(100vw - 48px); width:calc(100vw - 48px); }
 }
 .team-card:hover { transform:translateY(-5px); box-shadow:0 20px 48px rgba(0,0,0,0.1); border-color:rgba(0,168,120,0.2); }
 .team-card::before {
@@ -2719,44 +2723,69 @@ document.querySelectorAll('.hero-stats').forEach(el => counterObs.observe(el));
   if (!track) return;
   var cards = track.querySelectorAll('.team-card');
   var total = cards.length;
-  var visibleCount = window.innerWidth < 600 ? 1 : window.innerWidth < 900 ? 2 : 3;
   var current = 0;
-  var cardW = 340; // matches flex-basis
   var gap = 20;
-  var autoTimer;
+
+  function getVisibleCount() {
+    return window.innerWidth < 600 ? 1 : window.innerWidth < 900 ? 2 : 3;
+  }
+
+  function getCardW() {
+    // Use actual rendered card width for accurate translation
+    if (cards[0]) return cards[0].offsetWidth;
+    return 320;
+  }
+
+  function getMaxIndex() {
+    return Math.max(0, total - getVisibleCount());
+  }
 
   // Build dots
-  var maxIndex = total - visibleCount;
-  for (var i = 0; i <= maxIndex; i++) {
-    var d = document.createElement('div');
-    d.className = 'team-dot' + (i === 0 ? ' active' : '');
-    d.setAttribute('data-i', i);
-    d.addEventListener('click', function() { goTo(parseInt(this.getAttribute('data-i'))); });
-    dotsWrap.appendChild(d);
+  function buildDots() {
+    dotsWrap.innerHTML = '';
+    var max = getMaxIndex();
+    for (var i = 0; i <= max; i++) {
+      var d = document.createElement('div');
+      d.className = 'team-dot' + (i === current ? ' active' : '');
+      d.setAttribute('data-i', i);
+      d.addEventListener('click', function() { goTo(parseInt(this.getAttribute('data-i'))); });
+      dotsWrap.appendChild(d);
+    }
   }
 
   function goTo(idx) {
+    var maxIndex = getMaxIndex();
     current = Math.max(0, Math.min(idx, maxIndex));
+    var cardW = getCardW();
     track.style.transform = 'translateX(-' + (current * (cardW + gap)) + 'px)';
     dotsWrap.querySelectorAll('.team-dot').forEach(function(d, i) {
       d.classList.toggle('active', i === current);
     });
   }
 
-  function next() { goTo(current >= maxIndex ? 0 : current + 1); }
-  function prev() { goTo(current <= 0 ? maxIndex : current - 1); }
+  function next() { goTo(current >= getMaxIndex() ? 0 : current + 1); }
+  function prev() { goTo(current <= 0 ? getMaxIndex() : current - 1); }
 
-  nextBtn && nextBtn.addEventListener('click', function() { next(); resetAuto(); });
-  prevBtn && prevBtn.addEventListener('click', function() { prev(); resetAuto(); });
+  nextBtn && nextBtn.addEventListener('click', function() { next(); });
+  prevBtn && prevBtn.addEventListener('click', function() { prev(); });
 
-  function startAuto() { autoTimer = setInterval(next, 3200); }
-  function resetAuto() { clearInterval(autoTimer); startAuto(); }
+  // Touch/swipe support for mobile
+  var touchStartX = 0;
+  track.addEventListener('touchstart', function(e) { touchStartX = e.changedTouches[0].clientX; }, { passive: true });
+  track.addEventListener('touchend', function(e) {
+    var diff = touchStartX - e.changedTouches[0].clientX;
+    if (Math.abs(diff) > 40) { diff > 0 ? next() : prev(); }
+  }, { passive: true });
 
-  // Pause on hover
-  track.addEventListener('mouseenter', function() { clearInterval(autoTimer); });
-  track.addEventListener('mouseleave', startAuto);
+  // Rebuild on resize
+  window.addEventListener('resize', function() {
+    if (current > getMaxIndex()) current = getMaxIndex();
+    buildDots();
+    goTo(current);
+  });
 
-  startAuto();
+  buildDots();
+  goTo(0);
 })();
 
 // ─── JOURNEY SCROLL ANIMATION ───
